@@ -1,7 +1,7 @@
 import App from '@components/App'
 import InfoBox from '@components/InfoBox'
 import Header from '@components/Header'
-import Submit from '@components/Submit'
+import Register from '@components/Forms/Register'
 import BookList, {
   ALL_BOOKS_QUERY,
   allBooksQueryVars,
@@ -13,7 +13,7 @@ const IndexPage: NextPage = () => (
   <App>
     <Header />
     <InfoBox>ℹ️ This page shows how to use SSG with Apollo.</InfoBox>
-    <Submit />
+    <Register />
     <BookList />
   </App>
 )

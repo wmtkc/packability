@@ -1,7 +1,7 @@
 import App from "@components/App";
 import InfoBox from "@components/InfoBox";
 import Header from "@components/Header";
-import Submit from "@components/Submit";
+import Submit from "@components/Forms/BookSubmit";
 import BookList, {
   ALL_BOOKS_QUERY,
   allBooksQueryVars,
