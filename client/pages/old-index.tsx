@@ -38,8 +38,8 @@ const Home: NextPage = () => {
         <p className={styles.description}>Pack your bags!</p>
 
         <div className={styles.grid}>
-          { data.books.map((book: Book) => (
-            <div className={styles.card}>
+          { data.books.forEach((book: Book, i: number) => (
+            <div className={styles.card} key={i}>
               <h2>{book.title} &larr;</h2>
               <p>{book.author}</p>
             </div>
