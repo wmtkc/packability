@@ -1,4 +1,6 @@
 import "@styles/globals.css";
+import "react-notion/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
 import type { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "@lib/apolloClient";
