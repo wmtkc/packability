@@ -1,24 +1,6 @@
-import { gql, useQuery, NetworkStatus } from '@apollo/client';
-import { initializeApollo } from '@lib/apolloClient';
+import { useQuery, NetworkStatus } from '@apollo/client';
 import ErrorMessage from './ErrorMessage';
-
-export const ALL_BOOKS_QUERY = gql`
-  query ($skip: Int, $first: Int) {
-    _booksMeta {
-      count
-    }
-    books(skip: $skip, first: $first) {
-      title
-      author
-      id
-    }
-  }
-`;
-
-export const allBooksQueryVars = {
-  skip: 0,
-  first: 5,
-}
+import { ALL_BOOKS_QUERY, allBooksQueryVars } from '@lib/queries/books';
 
 export default function BookList() {
   const { loading, error, data, fetchMore, networkStatus } = useQuery(
