@@ -1,14 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
-
-const CREATE_BOOK_MUTATION = gql`
-    mutation Mutation($title: String!, $author: String!) {
-        createBook(title: $title, author: $author) {
-            id
-            title
-            author
-        }
-    }
-`
+import { CREATE_BOOK_MUTATION } from '@lib/mutations/createBook'
 
 export default function Submit() {
   const [createBook, { loading }] = useMutation(CREATE_BOOK_MUTATION)

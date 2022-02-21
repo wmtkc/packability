@@ -1,21 +1,10 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import { useEffect, useState, useMemo } from 'react';
+import { useMutation, useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react';
 import styles from "@styles/components/Register.module.css";
-import { stat } from 'fs';
 
-const CREATE_USER_MUTATION = gql`
-  mutation Mutation($username: String!, $email: String!, $password: String!) {
-      createUser(username: $username, email: $email, password: $password) {
-        id
-      }
-  }
-`
+import { CREATE_USER_MUTATION } from '@lib/mutations/createUser';
+import { IS_USERNAME_AVAILABLE_QUERY } from '@lib/queries/isUsernameAvailable';
 
-const IS_USERNAME_AVAILABLE_QUERY = gql`
-  query Query($username: String!) {
-    isUsernameAvailable(username: $username)
-  }
-`;
 
 export default function Register () {
 
