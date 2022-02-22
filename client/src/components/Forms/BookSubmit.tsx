@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
-import { CREATE_BOOK_MUTATION } from 'src/lib/mutations/createBook'
+import { CREATE_BOOK_MUTATION } from '@lib/mutations/createBook'
 
 export default function Submit() {
   const [createBook, { loading }] = useMutation(CREATE_BOOK_MUTATION)
