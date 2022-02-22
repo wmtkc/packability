@@ -2,8 +2,8 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react';
 import styles from "@styles/components/Register.module.css";
 
-import { CREATE_USER_MUTATION } from 'src/lib/mutations/createUser';
-import { IS_USERNAME_AVAILABLE_QUERY } from 'src/lib/queries/isUsernameAvailable';
+import { CREATE_USER_MUTATION } from '@lib/mutations/createUser';
+import { IS_USERNAME_AVAILABLE_QUERY } from '@lib/queries/isUsernameAvailable';
 
 
 export default function Register () {

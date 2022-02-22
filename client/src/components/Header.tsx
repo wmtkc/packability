@@ -1,38 +1,51 @@
-import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Head from 'next/head'
+import ExtLink from './rich-text/ext-link'
+import { useRouter } from 'next/router'
+import styles from '../styles/header.module.css'
 
-export default function Header() {
+const navItems: { label: string; page?: string; link?: string }[] = [
+  { label: 'Home', page: '/' },
+  { label: 'Blog', page: '/blog' },
+  { label: 'Source Code', link: 'https://github.com/ijjk/notion-blog' },
+]
+
+const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
+
+const Header = ({ titlePre = '' }) => {
   const { pathname } = useRouter()
 
   return (
-    <header>
-      <Link href="/">
-        <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
-      </Link>
-      <Link href="/about">
-        <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
-      </Link>
-      <Link href="/client-only">
-        <a className={pathname === '/client-only' ? 'is-active' : ''}>
-          Client-Only
-        </a>
-      </Link>
-      <Link href="/ssr">
-        <a className={pathname === '/ssr' ? 'is-active' : ''}>SSR</a>
-      </Link>
-      <style jsx>{`
-        header {
-          margin-bottom: 25px;
-        }
-        a {
-          font-size: 14px;
-          margin-right: 15px;
-          text-decoration: none;
-        }
-        .is-active {
-          text-decoration: underline;
-        }
-      `}</style>
+    <header className={styles.header}>
+      <Head>
+        <title>{titlePre ? `${titlePre} |` : ''} My Notion Blog</title>
+        <meta
+          name="description"
+          content="An example Next.js site using Notion for the blog"
+        />
+        <meta name="og:title" content="My Notion Blog" />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta name="twitter:site" content="@_ijjk" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={ogImageUrl} />
+      </Head>
+      <ul>
+        {navItems.map(({ label, page, link }) => (
+          <li key={label}>
+            {page ? (
+              <Link href={page}>
+                <a className={pathname === page ? 'active' : undefined}>
+                  {label}
+                </a>
+              </Link>
+            ) : (
+              <ExtLink href={link}>{label}</ExtLink>
+            )}
+          </li>
+        ))}
+      </ul>
     </header>
   )
 }
+
+export default Header
