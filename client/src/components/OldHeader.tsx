@@ -9,16 +9,16 @@ export default function Header() {
       <Link href="/">
         <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
       </Link>
-      <Link href="/about">
-        <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
+      <Link href="/examples/about">
+        <a className={pathname === '/examples/about' ? 'is-active' : ''}>About</a>
       </Link>
-      <Link href="/client-only">
-        <a className={pathname === '/client-only' ? 'is-active' : ''}>
+      <Link href="/examples/client-only">
+        <a className={pathname === '/examples/client-only' ? 'is-active' : ''}>
           Client-Only
         </a>
       </Link>
-      <Link href="/ssr">
-        <a className={pathname === '/ssr' ? 'is-active' : ''}>SSR</a>
+      <Link href="/examples/ssr">
+        <a className={pathname === '/examples/ssr' ? 'is-active' : ''}>SSR</a>
       </Link>
       <style jsx>{`
         header {
