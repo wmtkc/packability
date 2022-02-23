@@ -1,7 +1,7 @@
 import App from '@components/App'
 import InfoBox from '@components/InfoBox'
 import Header from '@components/OldHeader'
-import Register from '@components/Forms/Register'
+import Register from '@components/forms/Register'
 import BookList from '@components/BookList'
 import { ALL_BOOKS_QUERY, allBooksQueryVars } from '@lib/queries/books'
 import { initializeApollo, addApolloState } from '@lib/apolloClient'

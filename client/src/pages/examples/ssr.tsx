@@ -1,7 +1,7 @@
 import App from "@components/App";
 import InfoBox from "@components/InfoBox";
 import Header from "@components/OldHeader";
-import Submit from "@components/Forms/BookSubmit";
+import Submit from "@components/forms/BookSubmit";
 import BookList from "@components/BookList";
 import { ALL_BOOKS_QUERY, allBooksQueryVars } from "@lib/queries/books";
 import { initializeApollo, addApolloState } from "@lib/apolloClient";
