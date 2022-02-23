@@ -28,13 +28,7 @@ export default function Register () {
   let [createUser, { loading: creatingUser }] = useMutation(CREATE_USER_MUTATION);
 
   useEffect(() => {
-    if ((usernameLoading || creatingUser) && !state.loader) {
-      console.dir('loader on');
-      setState({...state, loader: true});
-    } else if (state.loader) {
-      console.dir('loader off');
-      setState({...state, loader: false})
-    }
+    setState({...state, loader: usernameLoading || creatingUser});
   }, [usernameLoading, creatingUser]);
   
   useEffect(() => {
@@ -91,15 +85,18 @@ export default function Register () {
       return;
     }; 
 
-    const userId = await createUser({
-      variables: { 
-        email: state.email, 
-        username: state.username, 
-        password: state.password 
-      }
-    });
-
-    console.log(userId);
+    try {
+      const res = await createUser({
+        variables: { 
+          email: state.email, 
+          username: state.username, 
+          password: state.password 
+        }
+      });
+      console.log(res);
+    } catch (err) {
+      setState({...state, message: err.message});
+    }
   }
 
   return (
