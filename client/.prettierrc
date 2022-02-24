@@ -9,5 +9,14 @@
     "jsxSingleQuote": false,
     "trailingComma": "all",
     "arrowParens": "avoid",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "importOrder": [
+        "^@pages/(.*)$",
+        "^@components/(.*)$",
+        "^@styles/(.*)$",
+        "^@lib/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
 }
