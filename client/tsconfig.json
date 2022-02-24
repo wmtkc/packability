@@ -1,29 +1,28 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "noImplicitAny": false,
-    "baseUrl": ".",
-      "paths": {
-        "@data/*": ["src/data/*"],
-        "@components/*": ["src/components/*"],
-        "@lib/*": ["src/lib/*"],
-        "@pages/*": ["src/pages/*"],
-        "@styles/*": ["src/styles/*"]
-      }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": false,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "noImplicitAny": false,
+        "baseUrl": ".",
+        "paths": {
+            "@pages/*": ["src/pages/*"],
+            "@components/*": ["src/components/*"],
+            "@styles/*": ["src/styles/*"],
+            "@lib/*": ["src/lib/*"]
+        }
+    },
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules"]
 }
