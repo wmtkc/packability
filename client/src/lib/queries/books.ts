@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const allBooksQueryVars = {
     skip: 0,
@@ -7,13 +7,13 @@ export const allBooksQueryVars = {
 
 export const ALL_BOOKS_QUERY = gql`
     query ($skip: Int, $first: Int) {
-      _booksMeta {
-        count
-      }
-      books(skip: $skip, first: $first) {
-        title
-        author
-        id
-      }
+        _booksMeta {
+            count
+        }
+        books(skip: $skip, first: $first) {
+            title
+            author
+            id
+        }
     }
 `
