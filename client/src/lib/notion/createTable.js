@@ -352,12 +352,12 @@ async function getExistingexistingBlockId() {
 
     if (!res.ok) {
         throw new Error(
-            `failed to get existing block id, request status: ${res.status}`
+            `failed to get existing block id, request status: ${res.status}`,
         )
     }
     const data = await res.json()
     const id = Object.keys(data ? data.recordMap.block : {}).find(
-        (id) => id !== pageId
+        id => id !== pageId,
     )
     return id || uuid()
 }
@@ -374,7 +374,7 @@ async function getUserId() {
 
     if (!res.ok) {
         throw new Error(
-            `failed to get Notion user id, request status: ${res.status}`
+            `failed to get Notion user id, request status: ${res.status}`,
         )
     }
     const data = await res.json()

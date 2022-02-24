@@ -1,9 +1,10 @@
-import { useMemo } from 'react'
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import { typePolicies } from './typePolicies'
-import getConfig from 'next/config'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import getConfig from 'next/config'
+import { useMemo } from 'react'
+
+import { typePolicies } from './typePolicies'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -37,11 +38,11 @@ export function initializeApollo(initialState = null) {
             // combine arrays using object equality (like in sets)
             arrayMerge: (
                 destinationArray: Array<any>,
-                sourceArray: Array<any>
+                sourceArray: Array<any>,
             ) => [
                 ...sourceArray,
-                ...destinationArray.filter((d) =>
-                    sourceArray.every((s: any) => !isEqual(d, s))
+                ...destinationArray.filter(d =>
+                    sourceArray.every((s: any) => !isEqual(d, s)),
                 ),
             ],
         })

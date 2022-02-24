@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+
 import getNotionAssetUrls from '../../lib/notion/getNotionAssetUrls'
-import { setHeaders, handleData, handleError } from '../../lib/notion/utils'
+import { handleData, handleError, setHeaders } from '../../lib/notion/utils'
 
 export default async function notionApi(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse,
 ) {
     if (setHeaders(req, res)) return
     try {

@@ -1,6 +1,7 @@
-import { useQuery, NetworkStatus } from '@apollo/client'
-import ErrorMessage from './ErrorMessage'
+import { NetworkStatus, useQuery } from '@apollo/client'
 import { ALL_BOOKS_QUERY, allBooksQueryVars } from 'src/lib/queries/books'
+
+import ErrorMessage from './ErrorMessage'
 
 export default function BookList() {
     const { loading, error, data, fetchMore, networkStatus } = useQuery(
@@ -8,7 +9,7 @@ export default function BookList() {
         {
             variables: allBooksQueryVars,
             notifyOnNetworkStatusChange: true,
-        }
+        },
     )
 
     const loadingMoreBooks = networkStatus === NetworkStatus.fetchMore
@@ -44,8 +45,7 @@ export default function BookList() {
             {areMoreBooks && (
                 <button
                     onClick={() => loadMoreBooks()}
-                    disabled={loadingMoreBooks}
-                >
+                    disabled={loadingMoreBooks}>
                     {loadingMoreBooks ? 'Loading...' : 'Show More'}
                 </button>
             )}

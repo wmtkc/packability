@@ -1,142 +1,168 @@
 import { useMutation, useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react';
-import styles from "@styles/components/Register.module.css";
+import { useEffect, useState } from 'react'
 
-import { CREATE_USER_MUTATION } from '@lib/mutations/createUser';
-import { IS_USERNAME_AVAILABLE_QUERY } from '@lib/queries/isUsernameAvailable';
+import styles from '@styles/components/Register.module.css'
 
+import { CREATE_USER_MUTATION } from '@lib/mutations/createUser'
+import { IS_USERNAME_AVAILABLE_QUERY } from '@lib/queries/isUsernameAvailable'
 
-export default function Register () {
+export default function Register() {
+    const [state, setState] = useState({
+        email: '',
+        username: '',
+        password: '',
+        passwordVerify: '',
 
-  const [state, setState] = useState({
-    email: '',
-    username: '',
-    password: '',
-    passwordVerify: '',
-
-    message: '',
-    loader: false,
-    canSubmit: false
-  });
-
-  let { loading: usernameLoading, error, data } = useQuery(IS_USERNAME_AVAILABLE_QUERY, {
-    variables: {
-      username: state.username
-    }
-  }); 
-
-  let [createUser, { loading: creatingUser }] = useMutation(CREATE_USER_MUTATION);
-
-  useEffect(() => {
-    setState({...state, loader: usernameLoading || creatingUser});
-  }, [usernameLoading, creatingUser]);
-  
-  useEffect(() => {
-    if (error) setState({...state, message: error.message});
-  }, [error]);
-
-  useEffect(() => {
-    if (!usernameLoading && !data?.isUsernameAvailable) {
-      setState({...state, message: 'Username Already Taken'});
-    } else if (state.message !== '') {
-      setState({...state, message: ''});
-    }
-  }, [data]);
-
-  useEffect(() => {
-    const { password, passwordVerify } = state;
-
-    const passwordsDoNotMatch = password !== passwordVerify && 
-      password !== '' && 
-      passwordVerify !== '';
-    if (passwordsDoNotMatch) {
-      setState({
-        ...state, 
-        message: 'Passwords do not match',
-        canSubmit: false
-      }) ; 
-    } else if (state.message !== '' || !state.canSubmit) {
-      setState({
-        ...state, 
         message: '',
-        canSubmit: true
-      }) ; 
-    }
+        loader: false,
+        canSubmit: false,
+    })
 
-  }, [state.password, state.passwordVerify]);
+    let {
+        loading: usernameLoading,
+        error,
+        data,
+    } = useQuery(IS_USERNAME_AVAILABLE_QUERY, {
+        variables: {
+            username: state.username,
+        },
+    })
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setState({
-      ...state,
-      [name]: value
-    });
-  }
+    let [createUser, { loading: creatingUser }] =
+        useMutation(CREATE_USER_MUTATION)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.target;
+    useEffect(() => {
+        setState({ ...state, loader: usernameLoading || creatingUser })
+    }, [usernameLoading, creatingUser])
 
-    form.reset();
+    useEffect(() => {
+        if (error) setState({ ...state, message: error.message })
+    }, [error])
 
-    if (state.password !== state.passwordVerify) {
-      setState({...state, message: 'Passwords do not match'});
-      return;
-    }; 
-
-    try {
-      const res = await createUser({
-        variables: { 
-          email: state.email, 
-          username: state.username, 
-          password: state.password 
+    useEffect(() => {
+        if (!usernameLoading && !data?.isUsernameAvailable) {
+            setState({ ...state, message: 'Username Already Taken' })
+        } else if (state.message !== '') {
+            setState({ ...state, message: '' })
         }
-      });
-      console.log(res);
-    } catch (err) {
-      setState({...state, message: err.message});
-    }
-  }
+    }, [data])
 
-  return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h1 className={styles.h1}>Register User</h1>
-      <input className={styles.input} 
-             placeholder="email" 
-             value={state.email} 
-             onChange={handleChange}
-             name="email" 
-             type="email" 
-             required />
-      <input className={styles.input} 
-             placeholder="username" 
-             value={state.username} 
-             onChange={handleChange}
-             name="username" 
-             type="text" 
-             required />
-      <input className={styles.input} 
-             placeholder="password" 
-             value={state.password} 
-             onChange={handleChange}
-             name="password" 
-             type="password" 
-             required />
-      <input className={styles.input} 
-             placeholder="verify password" 
-             value={state.passwordVerify}
-             onChange={handleChange} 
-             name="passwordVerify" 
-             type="password" 
-             required />
-      <div className={styles.submitFields}>
-        <button type="submit" disabled={!state.canSubmit}>
-          Submit
-        </button>
-        <div className={styles.message} style={(state.message) ? {visibility: "visible"} : {visibility: "hidden"}}>{state.message}</div>
-        <div className={styles.loader} style={(state.loader) ? {visibility: "visible"} : {visibility: "hidden"}}></div>
-      </div>
-    </form>
-  )
+    useEffect(() => {
+        const { password, passwordVerify } = state
+
+        const passwordsDoNotMatch =
+            password !== passwordVerify &&
+            password !== '' &&
+            passwordVerify !== ''
+        if (passwordsDoNotMatch) {
+            setState({
+                ...state,
+                message: 'Passwords do not match',
+                canSubmit: false,
+            })
+        } else if (state.message !== '' || !state.canSubmit) {
+            setState({
+                ...state,
+                message: '',
+                canSubmit: true,
+            })
+        }
+    }, [state.password, state.passwordVerify])
+
+    const handleChange = event => {
+        const name = event.target.name
+        const value = event.target.value
+        setState({
+            ...state,
+            [name]: value,
+        })
+    }
+
+    const handleSubmit = async event => {
+        event.preventDefault()
+        const form = event.target
+
+        form.reset()
+
+        if (state.password !== state.passwordVerify) {
+            setState({ ...state, message: 'Passwords do not match' })
+            return
+        }
+
+        try {
+            const res = await createUser({
+                variables: {
+                    email: state.email,
+                    username: state.username,
+                    password: state.password,
+                },
+            })
+            console.log(res)
+        } catch (err) {
+            setState({ ...state, message: err.message })
+        }
+    }
+
+    return (
+        <form className={styles.form} onSubmit={handleSubmit}>
+            <h1 className={styles.h1}>Register User</h1>
+            <input
+                className={styles.input}
+                placeholder="email"
+                value={state.email}
+                onChange={handleChange}
+                name="email"
+                type="email"
+                required
+            />
+            <input
+                className={styles.input}
+                placeholder="username"
+                value={state.username}
+                onChange={handleChange}
+                name="username"
+                type="text"
+                required
+            />
+            <input
+                className={styles.input}
+                placeholder="password"
+                value={state.password}
+                onChange={handleChange}
+                name="password"
+                type="password"
+                required
+            />
+            <input
+                className={styles.input}
+                placeholder="verify password"
+                value={state.passwordVerify}
+                onChange={handleChange}
+                name="passwordVerify"
+                type="password"
+                required
+            />
+            <div className={styles.submitFields}>
+                <button type="submit" disabled={!state.canSubmit}>
+                    Submit
+                </button>
+                <div
+                    className={styles.message}
+                    style={
+                        state.message
+                            ? { visibility: 'visible' }
+                            : { visibility: 'hidden' }
+                    }>
+                    {state.message}
+                </div>
+                <div
+                    className={styles.loader}
+                    style={
+                        state.loader
+                            ? { visibility: 'visible' }
+                            : { visibility: 'hidden' }
+                    }></div>
+            </div>
+        </form>
+    )
 }

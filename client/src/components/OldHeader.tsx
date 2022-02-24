@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function Header() {
     const { pathname } = useRouter()
@@ -13,8 +13,7 @@ export default function Header() {
                 <a
                     className={
                         pathname === '/examples/about' ? 'is-active' : ''
-                    }
-                >
+                    }>
                     About
                 </a>
             </Link>
@@ -22,8 +21,7 @@ export default function Header() {
                 <a
                     className={
                         pathname === '/examples/client-only' ? 'is-active' : ''
-                    }
-                >
+                    }>
                     Client-Only
                 </a>
             </Link>

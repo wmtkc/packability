@@ -1,7 +1,9 @@
-import '@styles/global.css'
+import { ApolloProvider } from '@apollo/client'
 import 'katex/dist/katex.css'
 import type { AppProps } from 'next/app'
-import { ApolloProvider } from '@apollo/client'
+
+import '@styles/global.css'
+
 import { useApollo } from '@lib/apolloClient'
 
 import Footer from '../components/footer'

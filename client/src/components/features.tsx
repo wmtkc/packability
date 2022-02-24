@@ -1,11 +1,11 @@
-import Lightning from './svgs/lightning'
-import Jamstack from './svgs/jamstack'
-import Wifi from './svgs/wifi'
-import Lighthouse from './svgs/lighthouse'
-import Plus from './svgs/plus'
-import Notion from './svgs/notion'
 import Edit from './svgs/edit'
+import Jamstack from './svgs/jamstack'
+import Lighthouse from './svgs/lighthouse'
+import Lightning from './svgs/lightning'
+import Notion from './svgs/notion'
+import Plus from './svgs/plus'
 import Scroll from './svgs/scroll'
+import Wifi from './svgs/wifi'
 
 const features = [
     {

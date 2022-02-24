@@ -1,4 +1,5 @@
 import fetch, { Response } from 'node-fetch'
+
 import { API_ENDPOINT, NOTION_TOKEN } from './server-constants'
 
 export default async function rpc(fnName: string, body: any) {
@@ -24,7 +25,7 @@ export default async function rpc(fnName: string, body: any) {
 
 export async function getError(res: Response) {
     return `Notion API error (${res.status}) \n${getJSONHeaders(
-        res
+        res,
     )}\n ${await getBodyOrNull(res)}`
 }
 
@@ -43,7 +44,7 @@ export function getBodyOrNull(res: Response) {
 export function values(obj: any) {
     const vals: any = []
 
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
         vals.push(obj[key])
     })
     return vals
