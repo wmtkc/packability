@@ -1,8 +1,9 @@
-import Link from 'next/link'
 import Head from 'next/head'
-import ExtLink from './rich-text/ext-link'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+
 import styles from '../styles/header.module.css'
+import ExtLink from './rich-text/ext-link'
 
 const navItems: { label: string; page?: string; link?: string }[] = [
     { label: 'Home', page: '/' },
@@ -38,8 +39,7 @@ const Header = ({ titlePre = '' }) => {
                                 <a
                                     className={
                                         pathname === page ? 'active' : undefined
-                                    }
-                                >
+                                    }>
                                     {label}
                                 </a>
                             </Link>

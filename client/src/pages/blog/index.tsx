@@ -1,24 +1,23 @@
 import Link from 'next/link'
+
 import Header from '../../components/header'
-
-import blogStyles from '../../styles/blog.module.css'
-import sharedStyles from '../../styles/shared.module.css'
-
 import {
     getBlogLink,
     getDateStr,
     postIsPublished,
 } from '../../lib/blog-helpers'
-import { textBlock } from '../../lib/notion/renderers'
-import getNotionUsers from '../../lib/notion/getNotionUsers'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
+import getNotionUsers from '../../lib/notion/getNotionUsers'
+import { textBlock } from '../../lib/notion/renderers'
+import blogStyles from '../../styles/blog.module.css'
+import sharedStyles from '../../styles/shared.module.css'
 
 export async function getStaticProps({ preview }) {
     const postsTable = await getBlogIndex()
 
     const authorsToGet: Set<string> = new Set()
     const posts: any[] = Object.keys(postsTable)
-        .map((slug) => {
+        .map(slug => {
             const post = postsTable[slug]
             // remove draft posts in production
             if (!preview && !postIsPublished(post)) {
@@ -34,8 +33,8 @@ export async function getStaticProps({ preview }) {
 
     const { users } = await getNotionUsers(Array.from(authorsToGet))
 
-    posts.map((post) => {
-        post.Authors = post.Authors.map((id) => users[id].full_name)
+    posts.map(post => {
+        post.Authors = post.Authors.map(id => users[id].full_name)
     })
 
     return {
@@ -69,7 +68,7 @@ const Index = ({ posts = [], preview }) => {
                 {posts.length === 0 && (
                     <p className={blogStyles.noPosts}>There are no posts yet</p>
                 )}
-                {posts.map((post) => {
+                {posts.map(post => {
                     return (
                         <div className={blogStyles.postPreview} key={post.Slug}>
                             <h3>
@@ -81,8 +80,7 @@ const Index = ({ posts = [], preview }) => {
                                     )}
                                     <Link
                                         href="/blog/[slug]"
-                                        as={getBlogLink(post.Slug)}
-                                    >
+                                        as={getBlogLink(post.Slug)}>
                                         <a>{post.Page}</a>
                                     </Link>
                                 </span>
@@ -101,7 +99,11 @@ const Index = ({ posts = [], preview }) => {
                                 {(!post.preview || post.preview.length === 0) &&
                                     'No preview available'}
                                 {(post.preview || []).map((block, idx) =>
-                                    textBlock(block, true, `${post.Slug}${idx}`)
+                                    textBlock(
+                                        block,
+                                        true,
+                                        `${post.Slug}${idx}`,
+                                    ),
                                 )}
                             </p>
                         </div>

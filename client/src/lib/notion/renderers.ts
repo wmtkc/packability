@@ -1,4 +1,5 @@
 import React from 'react'
+
 import components from '../../components/rich-text/dynamic'
 
 function applyTags(tags = [], children, noPTag = false, key) {
@@ -26,7 +27,7 @@ function applyTags(tags = [], children, noPTag = false, key) {
         child = React.createElement(
             components[tagName] || tagName,
             props,
-            child
+            child,
         )
     }
     return child
@@ -48,6 +49,6 @@ export function textBlock(text = [], noPTag = false, mainKey) {
         noPTag ? React.Fragment : components.p,
         { key: mainKey },
         ...children,
-        noPTag
+        noPTag,
     )
 }

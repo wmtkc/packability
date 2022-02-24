@@ -1,9 +1,10 @@
 import { Sema } from 'async-sema'
-import rpc, { values } from './rpc'
-import getTableData from './getTableData'
-import { getPostPreview } from './getPostPreview'
+
 import { readFile, writeFile } from '../fs-helpers'
-import { BLOG_INDEX_ID, BLOG_INDEX_CACHE } from './server-constants'
+import { getPostPreview } from './getPostPreview'
+import getTableData from './getTableData'
+import rpc, { values } from './rpc'
+import { BLOG_INDEX_CACHE, BLOG_INDEX_ID } from './server-constants'
 
 export default async function getBlogIndex(previews = true) {
     let postsTable: any = null
@@ -30,13 +31,13 @@ export default async function getBlogIndex(previews = true) {
 
             // Parse table with posts
             const tableBlock = values(data.recordMap.block).find(
-                (block: any) => block.value.type === 'collection_view'
+                (block: any) => block.value.type === 'collection_view',
             )
 
             postsTable = await getTableData(tableBlock, true)
         } catch (err) {
             console.warn(
-                `Failed to load Notion posts, have you run the create-table script?`
+                `Failed to load Notion posts, have you run the create-table script?`,
             )
             return {}
         }
@@ -56,20 +57,20 @@ export default async function getBlogIndex(previews = true) {
                         const timeB = postB.Date
                         return Math.sign(timeB - timeA)
                     })
-                    .map(async (postKey) => {
+                    .map(async postKey => {
                         await sema.acquire()
                         const post = postsTable[postKey]
                         post.preview = post.id
                             ? await getPostPreview(postsTable[postKey].id)
                             : []
                         sema.release()
-                    })
+                    }),
             )
         }
 
         if (useCache) {
             writeFile(cacheFile, JSON.stringify(postsTable), 'utf8').catch(
-                () => {}
+                () => {},
             )
         }
     }

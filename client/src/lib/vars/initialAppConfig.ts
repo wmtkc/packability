@@ -1,17 +1,16 @@
 /**
  * App Configuration State
  */
-
-import { makeVar } from "@apollo/client";
+import { makeVar } from '@apollo/client'
 
 interface AppConfig {
-  nightMode: boolean;
+    nightMode: boolean
 }
 
 const initialAppConfig: AppConfig = JSON.parse(
-  window.localStorage.getItem("packability.appConfig")
+    window.localStorage.getItem('packability.appConfig'),
 ) || {
-  nightMode: false,
-};
+    nightMode: false,
+}
 
-export const appConfigVar = makeVar<AppConfig>(initialAppConfig);
+export const appConfigVar = makeVar<AppConfig>(initialAppConfig)

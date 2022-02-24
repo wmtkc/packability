@@ -1,7 +1,8 @@
-import { values } from './rpc'
 import Slugger from 'github-slugger'
-import queryCollection from './queryCollection'
+
 import { normalizeSlug } from '../blog-helpers'
+import queryCollection from './queryCollection'
+import { values } from './rpc'
 
 export default async function loadTable(collectionBlock: any, isPosts = false) {
     const slugger = new Slugger()
@@ -29,7 +30,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
             row.id = entry.value.id
         }
 
-        schemaKeys.forEach((key) => {
+        schemaKeys.forEach(key => {
             // might be undefined
             let val = props[key] && props[key][0][0]
 
@@ -63,7 +64,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
                         const providedDate = new Date(
                             type[1].start_date +
                                 ' ' +
-                                (type[1].start_time || '')
+                                (type[1].start_time || ''),
                         ).getTime()
 
                         // calculate offset from provided time zone
@@ -71,7 +72,7 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
                             new Date(
                                 new Date().toLocaleString('en-US', {
                                     timeZone: type[1].time_zone,
-                                })
+                                }),
                             ).getTime() - new Date().getTime()
 
                         // initialize subtracting time zone offset

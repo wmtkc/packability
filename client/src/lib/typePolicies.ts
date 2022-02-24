@@ -1,15 +1,16 @@
-import { concatPagination } from "@apollo/client/utilities";
-import { appConfigVar } from "./vars/initialAppConfig";
+import { concatPagination } from '@apollo/client/utilities'
+
+import { appConfigVar } from './vars/initialAppConfig'
 
 export const typePolicies = {
-  Query: {
-    fields: {
-      appConfig: {
-        read() {
-          return appConfigVar();
+    Query: {
+        fields: {
+            appConfig: {
+                read() {
+                    return appConfigVar()
+                },
+            },
+            books: concatPagination(),
         },
-      },
-      books: concatPagination(),
     },
-  },
-};
+}

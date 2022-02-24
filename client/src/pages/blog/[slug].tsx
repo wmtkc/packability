@@ -1,18 +1,19 @@
+import ReactJSXParser from '@zeit/react-jsx-parser'
+import Image from 'next/image'
 import Link from 'next/link'
-import fetch from 'node-fetch'
 import { useRouter } from 'next/router'
+import fetch from 'node-fetch'
+import React, { CSSProperties, useEffect } from 'react'
+
 import Header from '../../components/header'
 import Heading from '../../components/heading'
 import components from '../../components/rich-text/dynamic'
-import ReactJSXParser from '@zeit/react-jsx-parser'
-import blogStyles from '../../styles/blog.module.css'
-import { textBlock } from '../../lib/notion/renderers'
-import getPageData from '../../lib/notion/getPageData'
-import React, { CSSProperties, useEffect } from 'react'
+import { getBlogLink, getDateStr } from '../../lib/blog-helpers'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
-import { getBlogLink, getDateStr } from '../../lib/blog-helpers'
-import Image from 'next/image'
+import getPageData from '../../lib/notion/getPageData'
+import { textBlock } from '../../lib/notion/renderers'
+import blogStyles from '../../styles/blog.module.css'
 
 // Get the data for each blog post
 export async function getStaticProps({ params: { slug }, preview }) {
@@ -46,7 +47,7 @@ export async function getStaticProps({ params: { slug }, preview }) {
 
             try {
                 const res = await fetch(
-                    `https://api.twitter.com/1/statuses/oembed.json?id=${tweetId}`
+                    `https://api.twitter.com/1/statuses/oembed.json?id=${tweetId}`,
                 )
                 const json: any = await res.json()
                 properties.html = json.html.split('<script')[0]
@@ -58,7 +59,7 @@ export async function getStaticProps({ params: { slug }, preview }) {
     }
 
     const { users } = await getNotionUsers(post.Authors || [])
-    post.Authors = Object.keys(users).map((id) => users[id].full_name)
+    post.Authors = Object.keys(users).map(id => users[id].full_name)
 
     return {
         props: {
@@ -76,8 +77,8 @@ export async function getStaticPaths() {
     // for actually published ones
     return {
         paths: Object.keys(postsTable)
-            .filter((post) => postsTable[post].Published === 'Yes')
-            .map((slug) => getBlogLink(slug)),
+            .filter(post => postsTable[post].Published === 'Yes')
+            .map(slug => getBlogLink(slug)),
         fallback: true,
     }
 }
@@ -148,8 +149,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                         {` `}Viewing in preview mode{' '}
                         <Link
                             href={`/api/clear-preview?slug=${post.Slug}`}
-                            passHref
-                        >
+                            passHref>
                             <button className={blogStyles.escapePreview}>
                                 Exit Preview
                             </button>
@@ -203,10 +203,10 @@ const RenderPost = ({ post, redirect, preview }) => {
                             React.createElement(
                                 listTagName,
                                 { key: listLastId! },
-                                Object.keys(listMap).map((itemId) => {
+                                Object.keys(listMap).map(itemId => {
                                     if (listMap[itemId].isNested) return null
 
-                                    const createEl = (item) =>
+                                    const createEl = item =>
                                         React.createElement(
                                             components.li || 'ul',
                                             { key: item.key },
@@ -219,19 +219,19 @@ const RenderPost = ({ post, redirect, preview }) => {
                                                               item + 'sub-list',
                                                       },
                                                       item.nested.map(
-                                                          (nestedId) =>
+                                                          nestedId =>
                                                               createEl(
                                                                   listMap[
                                                                       nestedId
-                                                                  ]
-                                                              )
-                                                      )
+                                                                  ],
+                                                              ),
+                                                      ),
                                                   )
-                                                : null
+                                                : null,
                                         )
                                     return createEl(listMap[itemId])
-                                })
-                            )
+                                }),
+                            ),
                         )
                         listMap = {}
                         listLastId = null
@@ -239,14 +239,14 @@ const RenderPost = ({ post, redirect, preview }) => {
                     }
 
                     const renderHeading = (
-                        Type: string | React.ComponentType
+                        Type: string | React.ComponentType,
                     ) => {
                         toRender.push(
                             <Heading key={id}>
                                 <Type key={id}>
                                     {textBlock(properties.title, true, id)}
                                 </Type>
-                            </Heading>
+                            </Heading>,
                         )
                     }
 
@@ -268,38 +268,32 @@ const RenderPost = ({ post, redirect, preview }) => {
                                             className={
                                                 blogStyles.bookmarkContentsWrapper
                                             }
-                                            href={link}
-                                        >
+                                            href={link}>
                                             <div
                                                 role="button"
                                                 className={
                                                     blogStyles.bookmarkContents
-                                                }
-                                            >
+                                                }>
                                                 <div
                                                     className={
                                                         blogStyles.bookmarkInfo
-                                                    }
-                                                >
+                                                    }>
                                                     <div
                                                         className={
                                                             blogStyles.bookmarkTitle
-                                                        }
-                                                    >
+                                                        }>
                                                         {title}
                                                     </div>
                                                     <div
                                                         className={
                                                             blogStyles.bookmarkDescription
-                                                        }
-                                                    >
+                                                        }>
                                                         {description}
                                                     </div>
                                                     <div
                                                         className={
                                                             blogStyles.bookmarkLinkWrapper
-                                                        }
-                                                    >
+                                                        }>
                                                         <Image
                                                             src={icon}
                                                             className={
@@ -310,8 +304,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                                         <div
                                                             className={
                                                                 blogStyles.bookmarkLink
-                                                            }
-                                                        >
+                                                            }>
                                                             {link}
                                                         </div>
                                                     </div>
@@ -319,18 +312,15 @@ const RenderPost = ({ post, redirect, preview }) => {
                                                 <div
                                                     className={
                                                         blogStyles.bookmarkCoverWrapper1
-                                                    }
-                                                >
+                                                    }>
                                                     <div
                                                         className={
                                                             blogStyles.bookmarkCoverWrapper2
-                                                        }
-                                                    >
+                                                        }>
                                                         <div
                                                             className={
                                                                 blogStyles.bookmarkCoverWrapper3
-                                                            }
-                                                        >
+                                                            }>
                                                             <Image
                                                                 src={cover}
                                                                 className={
@@ -345,7 +335,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                         </a>
                                     </div>
                                 </div>
-                            </div>
+                            </div>,
                         )
                     }
 
@@ -356,7 +346,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                         case 'text':
                             if (properties) {
                                 toRender.push(
-                                    textBlock(properties.title, false, id)
+                                    textBlock(properties.title, false, id),
                                 )
                             }
                             break
@@ -378,7 +368,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                       Math.round(
                                           (block_width / baseBlockWidth) *
                                               100 *
-                                              roundFactor
+                                              roundFactor,
                                       ) / roundFactor
                                   }%`
                                 : block_height || '100%'
@@ -425,7 +415,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                     <Comp
                                         key={!useWrapper ? id : undefined}
                                         src={`/api/asset?assetUrl=${encodeURIComponent(
-                                            display_source as any
+                                            display_source as any,
                                         )}&blockId=${id}`}
                                         controls={!isImage}
                                         alt={`An ${
@@ -444,18 +434,17 @@ const RenderPost = ({ post, redirect, preview }) => {
                                     <div
                                         style={{
                                             paddingTop: `${Math.round(
-                                                block_aspect_ratio * 100
+                                                block_aspect_ratio * 100,
                                             )}%`,
                                             position: 'relative',
                                         }}
                                         className="asset-wrapper"
-                                        key={id}
-                                    >
+                                        key={id}>
                                         {child}
                                     </div>
                                 ) : (
                                     child
-                                )
+                                ),
                             )
                             break
                         }
@@ -492,16 +481,15 @@ const RenderPost = ({ post, redirect, preview }) => {
                                                 'script',
                                                 'style',
                                             ]}
-                                        />
+                                        />,
                                     )
                                 } else {
                                     toRender.push(
                                         <components.Code
                                             key={id}
-                                            language={language || ''}
-                                        >
+                                            language={language || ''}>
                                             {content}
-                                        </components.Code>
+                                        </components.Code>,
                                     )
                                 }
                             }
@@ -513,8 +501,8 @@ const RenderPost = ({ post, redirect, preview }) => {
                                     React.createElement(
                                         components.blockquote,
                                         { key: id },
-                                        properties.title
-                                    )
+                                        properties.title,
+                                    ),
                                 )
                             }
                             break
@@ -528,7 +516,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                     <div className="text">
                                         {textBlock(properties.title, true, id)}
                                     </div>
-                                </div>
+                                </div>,
                             )
                             break
                         }
@@ -540,7 +528,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                             __html: properties.html,
                                         }}
                                         key={id}
-                                    />
+                                    />,
                                 )
                             }
                             break
@@ -551,10 +539,9 @@ const RenderPost = ({ post, redirect, preview }) => {
                                 toRender.push(
                                     <components.Equation
                                         key={id}
-                                        displayMode={true}
-                                    >
+                                        displayMode={true}>
                                         {content}
-                                    </components.Equation>
+                                    </components.Equation>,
                                 )
                             }
                             break

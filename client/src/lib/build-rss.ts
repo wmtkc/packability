@@ -1,13 +1,14 @@
+import { loadEnvConfig } from '@next/env'
 import { resolve } from 'path'
-import { writeFile } from '@lib/fs-helpers'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { textBlock } from '@lib/notion/renderers'
+import { writeFile } from '@lib/fs-helpers'
 import getBlogIndex from '@lib/notion/getBlogIndex'
 import getNotionUsers from '@lib/notion/getNotionUsers'
-import { postIsPublished, getBlogLink } from './blog-helpers'
-import { loadEnvConfig } from '@next/env'
+import { textBlock } from '@lib/notion/renderers'
 import serverConstants from '@lib/notion/server-constants'
+
+import { getBlogLink, postIsPublished } from './blog-helpers'
 
 // must use weird syntax to bypass auto replacing of NODE_ENV
 process.env['NODE' + '_ENV'] = 'production'
@@ -41,9 +42,9 @@ function mapToEntry(post) {
           ${renderToStaticMarkup(
               post.preview
                   ? (post.preview || []).map((block, idx) =>
-                        textBlock(block, false, post.title + idx)
+                        textBlock(block, false, post.title + idx),
                     )
-                  : post.content
+                  : post.content,
           )}
           <p class="more">
             <a href="${post.link}">Read more</a>
@@ -76,14 +77,14 @@ async function main() {
     await loadEnvConfig(process.cwd())
     serverConstants.NOTION_TOKEN = process.env.NOTION_TOKEN
     serverConstants.BLOG_INDEX_ID = serverConstants.normalizeId(
-        process.env.BLOG_INDEX_ID
+        process.env.BLOG_INDEX_ID,
     )
 
     const postsTable = await getBlogIndex(true)
     const neededAuthors = new Set<string>()
 
     const blogPosts = Object.keys(postsTable)
-        .map((slug) => {
+        .map(slug => {
             const post = postsTable[slug]
             if (!postIsPublished(post)) return
 
@@ -98,8 +99,8 @@ async function main() {
 
     const { users } = await getNotionUsers(Array.from(neededAuthors))
 
-    blogPosts.forEach((post) => {
-        post.authors = post.authors.map((id) => users[id])
+    blogPosts.forEach(post => {
+        post.authors = post.authors.map(id => users[id])
         post.link = getBlogLink(post.Slug)
         post.title = post.Page
         post.date = post.Date
@@ -110,4 +111,4 @@ async function main() {
     console.log(`Atom feed file generated at \`${outputPath}\``)
 }
 
-main().catch((error) => console.error(error))
+main().catch(error => console.error(error))
