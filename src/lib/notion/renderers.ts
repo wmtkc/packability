@@ -2,7 +2,7 @@ import React from 'react'
 
 import components from '../../components/rich-text/dynamic'
 
-function applyTags(tags = [], children, noPTag = false, key) {
+function applyTags(tags: any, children: any, noPTag = false, key: number) {
     let child = children
 
     for (const tag of tags) {
@@ -33,7 +33,7 @@ function applyTags(tags = [], children, noPTag = false, key) {
     return child
 }
 
-export function textBlock(text = [], noPTag = false, mainKey) {
+export function textBlock(text: [string?] = [], noPTag = false, mainKey: any) {
     const children = []
     let key = 0
 
@@ -46,7 +46,7 @@ export function textBlock(text = [], noPTag = false, mainKey) {
         children.push(applyTags(textItem[1], textItem[0], noPTag, key))
     }
     return React.createElement(
-        noPTag ? React.Fragment : components.p,
+        noPTag ? React.Fragment : components['p'],
         { key: mainKey },
         ...children,
         noPTag,
