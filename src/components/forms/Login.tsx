@@ -1,9 +1,8 @@
-import { useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
 
 import styles from '@styles/components/Register.module.css'
 
-import { LOGIN_MUTATION } from '@lib/mutations/login'
+import { useLoginMutation } from '@lib/generated/graphql'
 
 export default function Login() {
     const [state, setState] = useState({
@@ -14,8 +13,7 @@ export default function Login() {
         loader: false,
     })
 
-    let [login, { loading: loggingIn, error: loginError }] =
-        useMutation(LOGIN_MUTATION)
+    let [login, { loading: loggingIn, error: loginError }] = useLoginMutation()
 
     useEffect(() => {
         if (loginError) setState({ ...state, message: loginError.message })

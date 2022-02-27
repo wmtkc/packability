@@ -60,6 +60,6 @@ module.exports = {
     },
     reactStrictMode: true,
     publicRuntimeConfig: {
-        API_URL: 'http://localhost:4000/',
+        API_URL: 'http://localhost:4000/graphql',
     },
 }

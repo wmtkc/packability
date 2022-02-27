@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
 
 import styles from '@styles/components/Register.module.css'
 
-import { CREATE_USER_MUTATION } from '@lib/mutations/createUser'
-import { IS_USERNAME_AVAILABLE_QUERY } from '@lib/queries/isUsernameAvailable'
+import {
+    useCreateUserMutation,
+    useIsUsernameAvailableQuery,
+} from '@lib/generated/graphql'
 
 export default function Register() {
     const [state, setState] = useState({
@@ -22,14 +23,13 @@ export default function Register() {
         loading: usernameLoading,
         error,
         data,
-    } = useQuery(IS_USERNAME_AVAILABLE_QUERY, {
+    } = useIsUsernameAvailableQuery({
         variables: {
             username: state.username,
         },
     })
 
-    let [createUser, { loading: creatingUser }] =
-        useMutation(CREATE_USER_MUTATION)
+    let [createUser, { loading: creatingUser }] = useCreateUserMutation()
 
     useEffect(() => {
         setState({ ...state, loader: usernameLoading || creatingUser })

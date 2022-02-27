@@ -7,7 +7,9 @@ export default function Header() {
     return (
         <header>
             <Link href="/">
-                <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
+                <a className={pathname === '/examples' ? 'is-active' : ''}>
+                    Home
+                </a>
             </Link>
             <Link href="/examples/about">
                 <a
