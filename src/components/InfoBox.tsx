@@ -1,4 +1,4 @@
-const InfoBox = ({ children }) => (
+const InfoBox = ({ children }: { children?: React.ReactNode }) => (
     <div className="info">
         <style jsx>{`
             .info {
