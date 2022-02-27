@@ -10,6 +10,7 @@ const navItems: { label: string; page?: string; link?: string }[] = [
     { label: 'Blog', page: '/blog' },
     { label: 'Login', page: '/login' },
     { label: 'Account', page: '/account' },
+    { label: 'Book Example', page: '/examples' },
 ]
 
 const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
@@ -20,6 +21,7 @@ const Header = ({ titlePre = '' }) => {
     return (
         <header className={styles.header}>
             <Head>
+                {/** TODO: Replace meta tags */}
                 <title>{titlePre ? `${titlePre} |` : ''} Packability</title>
                 <meta
                     name="description"

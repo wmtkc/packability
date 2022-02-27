@@ -50,20 +50,6 @@ export default function Submit() {
             <button type="submit" disabled={loading}>
                 Submit
             </button>
-            <style jsx>{`
-                form {
-                    border-bottom: 1px solid #ececec;
-                    padding-bottom: 20px;
-                    margin-bottom: 20px;
-                }
-                h1 {
-                    font-size: 20px;
-                }
-                input {
-                    display: block;
-                    margin-bottom: 10px;
-                }
-            `}</style>
         </form>
     )
 }
