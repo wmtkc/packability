@@ -16,7 +16,13 @@ function render(expression: string, displayMode: boolean): string {
     return result
 }
 
-const Equation = ({ children, displayMode = true }) => {
+const Equation = ({
+    children,
+    displayMode = true,
+}: {
+    children: any
+    displayMode: boolean
+}) => {
     return (
         <span
             dangerouslySetInnerHTML={{
