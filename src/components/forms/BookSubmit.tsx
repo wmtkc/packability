@@ -1,20 +1,23 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql } from '@apollo/client'
 
-import { CREATE_BOOK_MUTATION } from '@lib/mutations/createBook'
+import { useCreateBookMutation } from '@lib/generated/graphql'
 
 export default function Submit() {
-    const [createBook, { loading }] = useMutation(CREATE_BOOK_MUTATION)
+    const [createBook, { loading }] = useCreateBookMutation()
 
     const handleSubmit = event => {
         event.preventDefault()
         const form = event.target
         const formData = new window.FormData(form)
-        const title = formData.get('title')
-        const author = formData.get('author')
+        const title = formData.get('title').toString()
+        const author = formData.get('author').toString()
         form.reset()
 
         createBook({
-            variables: { title, author },
+            variables: {
+                title: title,
+                author: author,
+            },
             update: (cache, { data: { createBook } }) => {
                 cache.modify({
                     fields: {

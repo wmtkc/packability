@@ -1,16 +1,17 @@
-import { NetworkStatus, useQuery } from '@apollo/client'
-import { ALL_BOOKS_QUERY, allBooksQueryVars } from 'src/lib/queries/books'
+import { NetworkStatus } from '@apollo/client'
+
+import { useBooksQuery } from '@lib/generated/graphql'
 
 import ErrorMessage from './ErrorMessage'
 
 export default function BookList() {
-    const { loading, error, data, fetchMore, networkStatus } = useQuery(
-        ALL_BOOKS_QUERY,
-        {
-            variables: allBooksQueryVars,
-            notifyOnNetworkStatusChange: true,
+    const { loading, error, data, fetchMore, networkStatus } = useBooksQuery({
+        variables: {
+            first: 5,
+            skip: 0,
         },
-    )
+        notifyOnNetworkStatusChange: true,
+    })
 
     const loadingMoreBooks = networkStatus === NetworkStatus.fetchMore
 
