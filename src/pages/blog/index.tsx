@@ -12,11 +12,11 @@ import { textBlock } from '../../lib/notion/renderers'
 import blogStyles from '../../styles/blog.module.css'
 import sharedStyles from '../../styles/shared.module.css'
 
-export async function getStaticProps({ preview }) {
+export async function getStaticProps({ preview }: { preview: any }) {
     const postsTable = await getBlogIndex()
 
     const authorsToGet: Set<string> = new Set()
-    const posts: any[] = Object.keys(postsTable)
+    const posts: any = Object.keys(postsTable)
         .map(slug => {
             const post = postsTable[slug]
             // remove draft posts in production
@@ -33,8 +33,8 @@ export async function getStaticProps({ preview }) {
 
     const { users } = await getNotionUsers(Array.from(authorsToGet))
 
-    posts.map(post => {
-        post.Authors = post.Authors.map(id => users[id].full_name)
+    posts.map((post: any) => {
+        post.Authors = post.Authors.map((id: any) => users[id].full_name)
     })
 
     return {
@@ -46,7 +46,7 @@ export async function getStaticProps({ preview }) {
     }
 }
 
-const Index = ({ posts = [], preview }) => {
+const Index = ({ posts = [], preview }: { posts: []; preview: any }) => {
     return (
         <>
             <Header titlePre="Blog" />
@@ -68,7 +68,7 @@ const Index = ({ posts = [], preview }) => {
                 {posts.length === 0 && (
                     <p className={blogStyles.noPosts}>There are no posts yet</p>
                 )}
-                {posts.map(post => {
+                {posts.map((post: any) => {
                     return (
                         <div className={blogStyles.postPreview} key={post.Slug}>
                             <h3>
@@ -98,12 +98,13 @@ const Index = ({ posts = [], preview }) => {
                             <p>
                                 {(!post.preview || post.preview.length === 0) &&
                                     'No preview available'}
-                                {(post.preview || []).map((block, idx) =>
-                                    textBlock(
-                                        block,
-                                        true,
-                                        `${post.Slug}${idx}`,
-                                    ),
+                                {(post.preview || []).map(
+                                    (block: any, idx: any) =>
+                                        textBlock(
+                                            block,
+                                            true,
+                                            `${post.Slug}${idx}`,
+                                        ),
                                 )}
                             </p>
                         </div>
