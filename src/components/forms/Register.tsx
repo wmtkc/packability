@@ -69,7 +69,7 @@ export default function Register() {
         }
     }, [state.password, state.passwordVerify])
 
-    const handleChange = event => {
+    const handleChange = (event: { target: { name: any; value: any } }) => {
         const name = event.target.name
         const value = event.target.value
         setState({
@@ -78,7 +78,10 @@ export default function Register() {
         })
     }
 
-    const handleSubmit = async event => {
+    const handleSubmit = async (event: {
+        preventDefault: () => void
+        target: any
+    }) => {
         event.preventDefault()
         const form = event.target
 

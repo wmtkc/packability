@@ -5,7 +5,10 @@ import { useCreateBookMutation } from '@lib/generated/graphql'
 export default function Submit() {
     const [createBook, { loading }] = useCreateBookMutation()
 
-    const handleSubmit = event => {
+    const handleSubmit = (event: {
+        preventDefault: () => void
+        target: any
+    }) => {
         event.preventDefault()
         const form = event.target
         const formData = new window.FormData(form)
