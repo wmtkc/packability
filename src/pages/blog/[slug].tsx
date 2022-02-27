@@ -1,3 +1,4 @@
+// @ts-ignore
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,7 +17,13 @@ import { textBlock } from '../../lib/notion/renderers'
 import blogStyles from '../../styles/blog.module.css'
 
 // Get the data for each blog post
-export async function getStaticProps({ params: { slug }, preview }) {
+export async function getStaticProps({
+    params: { slug },
+    preview,
+}: {
+    params: { slug: string }
+    preview: any
+}) {
     // load the postsTable so that we can get the page's ID
     const postsTable = await getBlogIndex()
     const post = postsTable[slug]
@@ -85,7 +92,15 @@ export async function getStaticPaths() {
 
 const listTypes = new Set(['bulleted_list', 'numbered_list'])
 
-const RenderPost = ({ post, redirect, preview }) => {
+const RenderPost = ({
+    post,
+    redirect,
+    preview,
+}: {
+    post: any
+    redirect: any
+    preview: any
+}) => {
     const router = useRouter()
 
     let listTagName: string | null = null
@@ -174,7 +189,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                     <p>This post has no content</p>
                 )}
 
-                {(post.content || []).map((block, blockIdx) => {
+                {(post.content || []).map((block: any, blockIdx: any) => {
                     const { value } = block
                     const { type, properties, id, parent_id } = value
                     const isLast = blockIdx === post.content.length - 1
@@ -206,7 +221,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                 Object.keys(listMap).map(itemId => {
                                     if (listMap[itemId].isNested) return null
 
-                                    const createEl = item =>
+                                    const createEl = (item: any) =>
                                         React.createElement(
                                             components.li || 'ul',
                                             { key: item.key },
@@ -219,7 +234,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                                               item + 'sub-list',
                                                       },
                                                       item.nested.map(
-                                                          nestedId =>
+                                                          (nestedId: any) =>
                                                               createEl(
                                                                   listMap[
                                                                       nestedId
@@ -255,6 +270,11 @@ const RenderPost = ({ post, redirect, preview }) => {
                         title,
                         description,
                         format,
+                    }: {
+                        link: any
+                        title: any
+                        description: any
+                        format: any
                     }) => {
                         const { bookmark_icon: icon, bookmark_cover: cover } =
                             format
@@ -485,6 +505,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                     )
                                 } else {
                                     toRender.push(
+                                        // @ts-ignore
                                         <components.Code
                                             key={id}
                                             language={language || ''}>
@@ -537,6 +558,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                             if (properties && properties.title) {
                                 const content = properties.title[0][0]
                                 toRender.push(
+                                    // @ts-ignore
                                     <components.Equation
                                         key={id}
                                         displayMode={true}>
