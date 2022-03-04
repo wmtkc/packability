@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import styles from '@styles/components/Register.module.css'
 
 import { useLoginMutation } from '@lib/generated/graphql'
+import { accessTokenVar } from '@lib/vars/authTokens'
 
 export default function Login() {
     const [state, setState] = useState({
@@ -48,7 +49,11 @@ export default function Login() {
                     password: state.password,
                 },
             })
-            console.log(res)
+
+            if (!res || !res?.data) throw new Error('Response Not Received')
+
+            accessTokenVar(res.data.login.accessToken)
+            // TODO: logout funcion, reset Apollo store on logout
         } catch (err) {
             setState({ ...state, message: err.message })
         }
