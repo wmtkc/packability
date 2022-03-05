@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import '@styles/global.css'
 
 import { useApollo } from '@lib/apolloClient'
-import { accessTokenVar } from '@lib/vars/authTokens'
+import { accessTokenVar } from '@lib/vars/accessToken'
 
 import Footer from '../components/footer'
 

@@ -14,7 +14,7 @@ import getConfig from 'next/config'
 import { useMemo } from 'react'
 
 import { typePolicies } from './typePolicies'
-import { accessTokenVar } from './vars/authTokens'
+import { accessTokenVar } from './vars/accessToken'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -25,12 +25,9 @@ const cache = new InMemoryCache({ typePolicies })
 const linkRefresh = new TokenRefreshLink({
     accessTokenField: 'accessToken',
     isTokenValidOrUndefined: () => {
-        console.log('checking token')
         const accessToken = accessTokenVar()
 
         if (!accessToken) return true
-
-        console.log('bad token?')
 
         try {
             const { exp }: { exp: number } = jwtDecode(accessToken)
@@ -40,14 +37,12 @@ const linkRefresh = new TokenRefreshLink({
         }
     },
     fetchAccessToken: async () => {
-        console.log('fetching access token')
         return fetch('http://localhost:4000/refresh_token', {
             method: 'POST',
             credentials: 'include',
         })
     },
     handleFetch: accessToken => {
-        console.log('new token: ' + accessToken)
         accessTokenVar(accessToken)
     },
     handleError: err => {

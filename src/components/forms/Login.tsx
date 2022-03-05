@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import styles from '@styles/components/Register.module.css'
 
-import { useLoginMutation } from '@lib/generated/graphql'
-import { accessTokenVar } from '@lib/vars/authTokens'
+import { MeDocument, MeQuery, useLoginMutation } from '@lib/generated/graphql'
+import { accessTokenVar } from '@lib/vars/accessToken'
 
 export default function Login() {
     const [state, setState] = useState({
@@ -47,6 +47,15 @@ export default function Login() {
                 variables: {
                     usernameOrEmail: state.usernameOrEmail,
                     password: state.password,
+                },
+                update: (cache, { data }) => {
+                    if (!data) return null
+                    cache.writeQuery<MeQuery>({
+                        query: MeDocument,
+                        data: {
+                            me: data.login.user,
+                        },
+                    })
                 },
             })
 

@@ -19,7 +19,7 @@ export type Scalars = {
 export type AuthData = {
   __typename?: 'AuthData';
   accessToken: Scalars['String'];
-  userId: Scalars['ID'];
+  user: User;
 };
 
 export type Bag = {
@@ -62,7 +62,7 @@ export type Mutation = {
   createItem: Item;
   createUser: User;
   login: AuthData;
-  logout: Scalars['String'];
+  logout: Scalars['Boolean'];
 };
 
 
@@ -101,11 +101,6 @@ export type MutationCreateUserArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
-};
-
-
-export type MutationLogoutArgs = {
-  logout?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type Query = {
@@ -219,7 +214,12 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthData', userId: string, accessToken: string } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthData', accessToken: string, user: { __typename?: 'User', id: string, email: string, username: string } } };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type BooksQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']>;
@@ -239,7 +239,7 @@ export type IsUsernameAvailableQuery = { __typename?: 'Query', isUsernameAvailab
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, email: string, name?: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, username: string } | null };
 
 
 export const CreateBookDocument = gql`
@@ -316,8 +316,12 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMut
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
-    userId
     accessToken
+    user {
+      id
+      email
+      username
+    }
   }
 }
     `;
@@ -348,6 +352,36 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const BooksDocument = gql`
     query Books($skip: Int, $first: Int) {
   books(skip: $skip, first: $first) {
@@ -425,9 +459,9 @@ export type IsUsernameAvailableQueryResult = Apollo.QueryResult<IsUsernameAvaila
 export const MeDocument = gql`
     query Me {
   me {
-    username
+    id
     email
-    name
+    username
   }
 }
     `;

@@ -1,13 +1,13 @@
-import { useReactiveVar } from '@apollo/client'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { useMeQuery } from '@lib/generated/graphql'
-import { accessTokenVar } from '@lib/vars/authTokens'
+import ExtLink from '@components/rich-text/ext-link'
 
-import styles from '../styles/header.module.css'
-import ExtLink from './rich-text/ext-link'
+import styles from '@styles/header.module.css'
+
+import { useLogoutMutation, useMeQuery } from '@lib/generated/graphql'
+import { accessTokenVar } from '@lib/vars/accessToken'
 
 const navItems: { label: string; page?: string; link?: string }[] = [
     { label: 'Home', page: '/' },
@@ -21,7 +21,8 @@ const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
 
 const Header = ({ titlePre = '' }) => {
     const { pathname } = useRouter()
-    const { data, loading } = useMeQuery({ fetchPolicy: 'network-only' })
+    const { data, loading } = useMeQuery()
+    const [logout, { client }] = useLogoutMutation()
 
     let meBody = null
 
@@ -67,6 +68,18 @@ const Header = ({ titlePre = '' }) => {
                 ))}
             </ul>
             {meBody}
+            {!loading && data && data.me ? (
+                <button
+                    onClick={async () => {
+                        await logout()
+                        accessTokenVar(null)
+                        await client.resetStore()
+                    }}>
+                    Logout
+                </button>
+            ) : (
+                <></>
+            )}
         </header>
     )
 }
