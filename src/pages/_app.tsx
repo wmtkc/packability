@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 credentials: 'include',
             }).then(async res => {
                 const data = await res.json()
-                accessTokenVar(data)
+                accessTokenVar(data.accessToken)
                 setLoading(false)
             })
         } catch (err) {

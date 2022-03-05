@@ -1,6 +1,10 @@
+import { useReactiveVar } from '@apollo/client'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { useMeQuery } from '@lib/generated/graphql'
+import { accessTokenVar } from '@lib/vars/authTokens'
 
 import styles from '../styles/header.module.css'
 import ExtLink from './rich-text/ext-link'
@@ -17,6 +21,17 @@ const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
 
 const Header = ({ titlePre = '' }) => {
     const { pathname } = useRouter()
+    const { data, loading } = useMeQuery({ fetchPolicy: 'network-only' })
+
+    let meBody = null
+
+    if (loading) {
+        meBody = null
+    } else if (data && data.me) {
+        meBody = <div>Logged in as {data.me.email}</div>
+    } else {
+        meBody = <div>Not Logged In</div>
+    }
 
     return (
         <header className={styles.header}>
@@ -51,6 +66,7 @@ const Header = ({ titlePre = '' }) => {
                     </li>
                 ))}
             </ul>
+            {meBody}
         </header>
     )
 }

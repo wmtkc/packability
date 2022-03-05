@@ -25,25 +25,29 @@ const cache = new InMemoryCache({ typePolicies })
 const linkRefresh = new TokenRefreshLink({
     accessTokenField: 'accessToken',
     isTokenValidOrUndefined: () => {
+        console.log('checking token')
         const accessToken = accessTokenVar()
 
         if (!accessToken) return true
 
+        console.log('bad token?')
+
         try {
             const { exp }: { exp: number } = jwtDecode(accessToken)
-            console.log(exp)
             return Date.now() < exp * 1000
         } catch (err) {
             return false
         }
     },
     fetchAccessToken: async () => {
+        console.log('fetching access token')
         return fetch('http://localhost:4000/refresh_token', {
             method: 'POST',
             credentials: 'include',
         })
     },
     handleFetch: accessToken => {
+        console.log('new token: ' + accessToken)
         accessTokenVar(accessToken)
     },
     handleError: err => {
@@ -55,11 +59,11 @@ const linkRefresh = new TokenRefreshLink({
 const linkError = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
-            console.log(
+            console.error(
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
             ),
         )
-    if (networkError) console.log(`[Network error]: ${networkError}`)
+    if (networkError) console.error(`[Network error]: ${networkError}`)
 })
 
 const linkHeaders = setContext((_, { headers }) => {
