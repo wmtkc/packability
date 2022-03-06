@@ -1,6 +1,11 @@
+import {
+    Button,
+    Flex,
+    Heading,
+    Input,
+    useColorModeValue,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-
-import styles from '@styles/components/Register.module.css'
 
 import { MeDocument, MeQuery, useLoginMutation } from '@lib/generated/graphql'
 import { accessTokenVar } from '@lib/vars/accessToken'
@@ -10,14 +15,15 @@ export default function Login() {
         usernameOrEmail: '',
         password: '',
 
-        message: '',
         loader: false,
     })
 
     let [login, { loading: loggingIn, error: loginError }] = useLoginMutation()
 
+    const formBackground = useColorModeValue('gray.100', 'gray.700')
+
     useEffect(() => {
-        if (loginError) setState({ ...state, message: loginError.message })
+        // Toast
     }, [loginError])
 
     useEffect(() => {
@@ -33,15 +39,7 @@ export default function Login() {
         })
     }
 
-    const handleSubmit = async (event: {
-        preventDefault: () => void
-        target: any
-    }) => {
-        event.preventDefault()
-        const form = event.target
-
-        form.reset()
-
+    const handleSubmit = async () => {
         try {
             const res = await login({
                 variables: {
@@ -62,52 +60,37 @@ export default function Login() {
             if (!res || !res?.data) throw new Error('Response Not Received')
 
             accessTokenVar(res.data.login.accessToken)
-            // TODO: logout funcion, reset Apollo store on logout
         } catch (err) {
-            setState({ ...state, message: err.message })
+            // Toast
         }
     }
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit}>
-            <h1 className={styles.h1}>Login</h1>
-            <input
-                className={styles.input}
+        <Flex direction="column" background={formBackground} p={12} rounded={6}>
+            <Heading mb={6}>Login</Heading>
+            <Input
                 placeholder="username or email"
+                variant="filled"
+                mb={3}
                 value={state.usernameOrEmail}
                 onChange={handleChange}
                 name="usernameOrEmail"
                 type="text"
                 required
             />
-            <input
-                className={styles.input}
+            <Input
                 placeholder="password"
+                variant="filled"
+                mb={6}
                 value={state.password}
                 onChange={handleChange}
                 name="password"
                 type="password"
                 required
             />
-            <div className={styles.submitFields}>
-                <button type="submit">Submit</button>
-                <div
-                    className={styles.message}
-                    style={
-                        state.message
-                            ? { visibility: 'visible' }
-                            : { visibility: 'hidden' }
-                    }>
-                    {state.message}
-                </div>
-                <div
-                    className={styles.loader}
-                    style={
-                        state.loader
-                            ? { visibility: 'visible' }
-                            : { visibility: 'hidden' }
-                    }></div>
-            </div>
-        </form>
+            <Button colorScheme="teal" onClick={handleSubmit}>
+                Log In
+            </Button>
+        </Flex>
     )
 }

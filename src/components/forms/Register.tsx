@@ -1,6 +1,12 @@
+import {
+    Button,
+    Flex,
+    Heading,
+    Input,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-
-import styles from '@styles/components/Register.module.css'
 
 import {
     useCreateUserMutation,
@@ -18,6 +24,8 @@ export default function Register() {
         loader: false,
         canSubmit: false,
     })
+
+    const formBackground = useColorModeValue('gray.100', 'gray.700')
 
     let {
         loading: usernameLoading,
@@ -82,13 +90,17 @@ export default function Register() {
         preventDefault: () => void
         target: any
     }) => {
-        event.preventDefault()
-        const form = event.target
-
-        form.reset()
-
         if (state.password !== state.passwordVerify) {
             setState({ ...state, message: 'Passwords do not match' })
+            return
+        }
+
+        // TODO: make this more robust
+        if (!state.email.includes('@')) {
+            setState({
+                ...state,
+                message: 'Please enter a valid email address',
+            })
             return
         }
 
@@ -107,65 +119,58 @@ export default function Register() {
     }
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit}>
-            <h1 className={styles.h1}>Register User</h1>
-            <input
-                className={styles.input}
+        <Flex direction="column" background={formBackground} p={12} rounded={6}>
+            <Heading mb={6}>Register User</Heading>
+            <Input
                 placeholder="email"
+                variant="filled"
+                mb={3}
                 value={state.email}
                 onChange={handleChange}
                 name="email"
                 type="email"
                 required
             />
-            <input
-                className={styles.input}
+            <Input
                 placeholder="username"
+                variant="filled"
+                mb={3}
                 value={state.username}
                 onChange={handleChange}
                 name="username"
                 type="text"
                 required
             />
-            <input
-                className={styles.input}
+            <Input
                 placeholder="password"
+                variant="filled"
+                mb={3}
                 value={state.password}
                 onChange={handleChange}
                 name="password"
                 type="password"
                 required
             />
-            <input
-                className={styles.input}
+            <Input
                 placeholder="verify password"
+                variant="filled"
+                mb={6}
                 value={state.passwordVerify}
                 onChange={handleChange}
                 name="passwordVerify"
                 type="password"
                 required
             />
-            <div className={styles.submitFields}>
-                <button type="submit" disabled={!state.canSubmit}>
-                    Submit
-                </button>
-                <div
-                    className={styles.message}
-                    style={
-                        state.message
-                            ? { visibility: 'visible' }
-                            : { visibility: 'hidden' }
-                    }>
-                    {state.message}
-                </div>
-                <div
-                    className={styles.loader}
-                    style={
-                        state.loader
-                            ? { visibility: 'visible' }
-                            : { visibility: 'hidden' }
-                    }></div>
-            </div>
-        </form>
+            <Button
+                colorScheme="teal"
+                mb={6}
+                onClick={handleSubmit}
+                disabled={!state.canSubmit}>
+                Register
+            </Button>
+            <Text visibility={state.message ? 'visible' : 'hidden'}>
+                {state.message}
+            </Text>
+        </Flex>
     )
 }

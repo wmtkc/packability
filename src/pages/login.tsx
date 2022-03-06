@@ -1,17 +1,17 @@
+import { Flex } from '@chakra-ui/react'
+
 import LoginForm from '@components/forms/Login'
 import RegisterForm from '@components/forms/Register'
 import Header from '@components/header'
-
-import sharedStyles from '@styles/shared.module.css'
 
 export default function Login() {
     return (
         <>
             <Header titlePre="Login" />
-            <div className={sharedStyles.layout}>
+            <Flex height="100vh" alignItems="center" justifyContent="center">
                 <RegisterForm />
                 <LoginForm />
-            </div>
+            </Flex>
         </>
     )
 }

@@ -1,3 +1,0 @@
-export default function ErrorMessage({ message }: { message: string }) {
-    return <aside>{message}</aside>
-}

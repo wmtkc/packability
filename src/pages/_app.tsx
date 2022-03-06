@@ -1,17 +1,15 @@
 import { ApolloProvider } from '@apollo/client'
+import { ChakraProvider } from '@chakra-ui/react'
 import 'katex/dist/katex.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 
-import '@styles/global.css'
-
 import { useApollo } from '@lib/apolloClient'
 import { accessTokenVar } from '@lib/vars/accessToken'
 
-import Footer from '../components/footer'
-
 function MyApp({ Component, pageProps }: AppProps) {
     const apolloClient = useApollo(pageProps)
+    // TODO: Use loading to set spinner
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -29,14 +27,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
     })
 
-    if (loading) {
-        return <div>Loading...</div>
-    }
-
     return (
         <ApolloProvider client={apolloClient}>
-            <Component {...pageProps} />
-            <Footer />
+            <ChakraProvider>
+                <Component {...pageProps} />
+            </ChakraProvider>
         </ApolloProvider>
     )
 }

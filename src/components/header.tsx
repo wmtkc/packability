@@ -1,10 +1,9 @@
+import { Button, useColorMode } from '@chakra-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import ExtLink from '@components/rich-text/ext-link'
-
-import styles from '@styles/header.module.css'
 
 import { useLogoutMutation, useMeQuery } from '@lib/generated/graphql'
 import { accessTokenVar } from '@lib/vars/accessToken'
@@ -20,22 +19,13 @@ const navItems: { label: string; page?: string; link?: string }[] = [
 const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
 
 const Header = ({ titlePre = '' }) => {
+    const { toggleColorMode } = useColorMode()
     const { pathname } = useRouter()
     const { data, loading } = useMeQuery()
     const [logout, { client }] = useLogoutMutation()
 
-    let meBody = null
-
-    if (loading) {
-        meBody = null
-    } else if (data && data.me) {
-        meBody = <div>Logged in as {data.me.email}</div>
-    } else {
-        meBody = <div>Not Logged In</div>
-    }
-
     return (
-        <header className={styles.header}>
+        <header>
             <Head>
                 {/** TODO: Replace meta tags */}
                 <title>{titlePre ? `${titlePre} |` : ''} Packability</title>
@@ -67,19 +57,19 @@ const Header = ({ titlePre = '' }) => {
                     </li>
                 ))}
             </ul>
-            {meBody}
             {!loading && data && data.me ? (
-                <button
+                <Button
                     onClick={async () => {
                         await logout()
                         accessTokenVar(null)
                         await client.resetStore()
                     }}>
                     Logout
-                </button>
+                </Button>
             ) : (
                 <></>
             )}
+            <Button onClick={toggleColorMode}>Color Mode</Button>
         </header>
     )
 }
