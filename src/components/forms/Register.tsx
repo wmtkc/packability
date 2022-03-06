@@ -13,7 +13,7 @@ import {
     useIsUsernameAvailableQuery,
 } from '@lib/generated/graphql'
 
-export default function Register() {
+function RegisterForm() {
     const [state, setState] = useState({
         email: '',
         username: '',
@@ -174,3 +174,5 @@ export default function Register() {
         </Flex>
     )
 }
+
+export default RegisterForm

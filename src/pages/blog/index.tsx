@@ -1,6 +1,5 @@
 import Link from 'next/link'
 
-import Header from '../../components/header'
 import {
     getBlogLink,
     getDateStr,
@@ -49,7 +48,6 @@ export async function getStaticProps({ preview }: { preview: any }) {
 const Index = ({ posts = [], preview }: { posts: []; preview: any }) => {
     return (
         <>
-            <Header titlePre="Blog" />
             {preview && (
                 <div className={blogStyles.previewAlertContainer}>
                     <div className={blogStyles.previewAlert}>

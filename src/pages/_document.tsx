@@ -4,11 +4,18 @@ class MyDocument extends Document {
     render() {
         return (
             <Html lang="en">
-                <Head />
+                <Head>
+                    <meta
+                        name="description"
+                        content="Packability Application"
+                    />
+                    <meta name="og:title" content="Packability" />
+                    {/* <meta property="og:image" content={ogImageUrl} /> */}
+                </Head>
                 <body>
                     <Main />
-                    <NextScript />
                 </body>
+                <NextScript />
             </Html>
         )
     }

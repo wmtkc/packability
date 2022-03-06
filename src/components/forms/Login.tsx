@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { MeDocument, MeQuery, useLoginMutation } from '@lib/generated/graphql'
 import { accessTokenVar } from '@lib/vars/accessToken'
 
-export default function Login() {
+function LoginForm() {
     const [state, setState] = useState({
         usernameOrEmail: '',
         password: '',
@@ -94,3 +94,5 @@ export default function Login() {
         </Flex>
     )
 }
+
+export default LoginForm

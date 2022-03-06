@@ -4,6 +4,8 @@ import 'katex/dist/katex.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 
+import Layout from '@components/layout/layout'
+
 import { useApollo } from '@lib/apolloClient'
 import { accessTokenVar } from '@lib/vars/accessToken'
 
@@ -30,7 +32,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ApolloProvider client={apolloClient}>
             <ChakraProvider>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </ChakraProvider>
         </ApolloProvider>
     )
