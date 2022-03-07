@@ -151,28 +151,3 @@ function Nav() {
 }
 
 export default Nav
-
-/**
- * <Flex direction="column">
-                {loggedIn ? (
-                    <>
-                        <NavItem
-                            label="Account"
-                            page={accountLink}
-                            isSmall={navSmall}
-                            active={pathname === accountLink}
-                        />
-                        <Button onClick={handleLogout}>Logout</Button>
-                    </>
-                ) : (
-                    <></>
-                )}
-                <Button onClick={toggleColorMode}>
-                    {colorMode === 'light' ? (
-                        <Icon as={FiMoon} />
-                    ) : (
-                        <Icon as={FiSun} />
-                    )}
-                </Button>
-            </Flex>
- */

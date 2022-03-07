@@ -28,17 +28,17 @@ function NavItem({
         <Flex m={2} mt={5} flexDir="column" alignItems="center">
             <Link
                 href={page}
-                backgroundColor={active && '#AEC8CA'}
+                borderLeftStyle={active ? 'solid' : 'hidden'}
+                borderLeftColor="Teal"
+                borderLeftWidth={3}
                 p={2}
                 ml={0.5}
                 borderRadius={8}
-                _hover={{ textDecor: 'none', backgroundColor: '#AEC8CA' }}>
+                variant="left-accent"
+                _hover={{ textDecor: 'none', borderLeftStyle: 'solid' }}
+                _focus={{ outline: 'none' }}>
                 <Flex h={5} alignContent="center">
-                    <Icon
-                        as={icon}
-                        fontSize="xl"
-                        color={active ? '#82AAAD' : 'gray.500'}
-                    />
+                    <Icon as={icon} fontSize="xl" />
                     <Text
                         ml={5}
                         flexGrow={1}
