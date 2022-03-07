@@ -13,13 +13,15 @@ function Layout({ children }: { children: ReactNode }) {
             <Head>
                 <title>Packability</title>
             </Head>
-            <Flex h="100vh" w="100vw">
+            <Flex h="100vh" maxHeight="100vh" w="100vw">
                 <Nav />
                 <Flex
                     h="100%"
                     w="100%"
+                    pt="10vh"
                     alignItems="center"
-                    justifyContent="center">
+                    justifyContent="center"
+                    overflow="scroll">
                     {children}
                 </Flex>
             </Flex>

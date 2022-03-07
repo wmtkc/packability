@@ -5,12 +5,14 @@ import {
     Input,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { MeDocument, MeQuery, useLoginMutation } from '@lib/generated/graphql'
 import { accessTokenVar } from '@lib/vars/accessToken'
 
 function LoginForm() {
+    const router = useRouter()
     const [state, setState] = useState({
         usernameOrEmail: '',
         password: '',
@@ -60,6 +62,7 @@ function LoginForm() {
             if (!res || !res?.data) throw new Error('Response Not Received')
 
             accessTokenVar(res.data.login.accessToken)
+            router.push('/u/' + res.data.login.user.username)
         } catch (err) {
             // Toast
         }

@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider } from '@chakra-ui/react'
 import 'katex/dist/katex.css'
 import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
@@ -28,6 +28,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             console.error(err)
         }
     })
+
+    if (loading) return <Box>Loading...</Box>
 
     return (
         <ApolloProvider client={apolloClient}>

@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import fetch from 'node-fetch'
 import React, { CSSProperties, useEffect } from 'react'
 
-import Header from '../../components/header'
 import components from '../../components/rich-text/dynamic'
 import Heading from '../../components/rich-text/h'
 import { getBlogLink, getDateStr } from '../../lib/blog-helpers'
@@ -156,7 +155,6 @@ const RenderPost = ({
 
     return (
         <>
-            <Header titlePre={post.Page} />
             {preview && (
                 <div className={blogStyles.previewAlertContainer}>
                     <div className={blogStyles.previewAlert}>
