@@ -1,6 +1,7 @@
 import {
     Button,
     Flex,
+    FormControl,
     Heading,
     Input,
     useColorModeValue,
@@ -69,7 +70,18 @@ function LoginForm() {
     }
 
     return (
-        <Flex direction="column" background={formBackground} p={12} rounded={6}>
+        <FormControl
+            display="flex"
+            flexDir="column"
+            background={formBackground}
+            w="20rem"
+            p={12}
+            rounded={6}
+            onKeyPress={event => {
+                if (event.key === 'Enter') {
+                    handleSubmit()
+                }
+            }}>
             <Heading mb={6}>Login</Heading>
             <Input
                 placeholder="username or email"
@@ -91,10 +103,10 @@ function LoginForm() {
                 type="password"
                 required
             />
-            <Button colorScheme="teal" onClick={handleSubmit}>
+            <Button colorScheme="teal" onClick={handleSubmit} type="submit">
                 Log In
             </Button>
-        </Flex>
+        </FormControl>
     )
 }
 

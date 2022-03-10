@@ -1,11 +1,13 @@
 import {
     Button,
     Flex,
+    FormControl,
     Heading,
     Input,
     Text,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import {
@@ -14,6 +16,7 @@ import {
 } from '@lib/generated/graphql'
 
 function RegisterForm() {
+    const router = useRouter()
     const [state, setState] = useState({
         email: '',
         username: '',
@@ -86,10 +89,7 @@ function RegisterForm() {
         })
     }
 
-    const handleSubmit = async (event: {
-        preventDefault: () => void
-        target: any
-    }) => {
+    const handleSubmit = async () => {
         if (state.password !== state.passwordVerify) {
             setState({ ...state, message: 'Passwords do not match' })
             return
@@ -113,13 +113,25 @@ function RegisterForm() {
                 },
             })
             console.log(res)
+            router.push('/login')
         } catch (err) {
             setState({ ...state, message: err.message })
         }
     }
 
     return (
-        <Flex direction="column" background={formBackground} p={12} rounded={6}>
+        <FormControl
+            display="flex"
+            flexDir="column"
+            background={formBackground}
+            w="22rem"
+            p={12}
+            rounded={6}
+            onKeyPress={event => {
+                if (event.key === 'Enter') {
+                    handleSubmit()
+                }
+            }}>
             <Heading mb={6}>Register User</Heading>
             <Input
                 placeholder="email"
@@ -171,7 +183,7 @@ function RegisterForm() {
             <Text visibility={state.message ? 'visible' : 'hidden'}>
                 {state.message}
             </Text>
-        </Flex>
+        </FormControl>
     )
 }
 
