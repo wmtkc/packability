@@ -1,0 +1,7 @@
+query GetKitItems($kit: ID!) {
+    getKitItems(kit: $kit) {
+        id
+        name
+        extUrl
+    }
+}

@@ -26,24 +26,18 @@ export type Bag = {
   __typename?: 'Bag';
   createdAt?: Maybe<Scalars['Date']>;
   id: Scalars['ID'];
-  items?: Maybe<Array<BagItem>>;
+  kits: Array<BagKit>;
   name: Scalars['String'];
   owner: Scalars['ID'];
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
-export type BagItem = {
-  __typename?: 'BagItem';
+export type BagKit = {
+  __typename?: 'BagKit';
   id: Scalars['ID'];
-  itemId: Scalars['ID'];
+  isDefault: Scalars['Boolean'];
+  kitId: Scalars['ID'];
   qty: Scalars['Int'];
-};
-
-export type Book = {
-  __typename?: 'Book';
-  author: Scalars['String'];
-  id: Scalars['ID'];
-  title: Scalars['String'];
 };
 
 export type Item = {
@@ -53,22 +47,48 @@ export type Item = {
   name: Scalars['String'];
 };
 
+export type Kit = {
+  __typename?: 'Kit';
+  createdAt?: Maybe<Scalars['Date']>;
+  id: Scalars['ID'];
+  items?: Maybe<Array<KitItem>>;
+  name: Scalars['String'];
+  owner: Scalars['ID'];
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export type KitItem = {
+  __typename?: 'KitItem';
+  id: Scalars['ID'];
+  itemId: Scalars['ID'];
+  qty: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
-  addBagItem: Bag;
+  addBagKit: Bag;
+  addKitItem: Kit;
   createBag: Bag;
-  createBook: Book;
   createItem: Item;
+  createKit: Kit;
   createUser: User;
   login: AuthData;
   logout: Scalars['Boolean'];
 };
 
 
-export type MutationAddBagItemArgs = {
+export type MutationAddBagKitArgs = {
   bag: Scalars['ID'];
+  kit: Scalars['ID'];
+  qty?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationAddKitItemArgs = {
   item: Scalars['ID'];
+  kit: Scalars['ID'];
   qty?: InputMaybe<Scalars['Int']>;
 };
 
@@ -79,15 +99,15 @@ export type MutationCreateBagArgs = {
 };
 
 
-export type MutationCreateBookArgs = {
-  author: Scalars['String'];
-  title: Scalars['String'];
+export type MutationCreateItemArgs = {
+  extUrl?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 
-export type MutationCreateItemArgs = {
-  extUrl: Scalars['String'];
+export type MutationCreateKitArgs = {
   name: Scalars['String'];
+  owner: Scalars['String'];
 };
 
 
@@ -107,15 +127,16 @@ export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['Boolean']>;
   _bagsMeta?: Maybe<_BagsMeta>;
-  _booksMeta?: Maybe<_BooksMeta>;
   _itemsMeta?: Maybe<_ItemsMeta>;
+  _kitsMeta?: Maybe<_KitsMeta>;
   _usersMeta?: Maybe<_UsersMeta>;
   bags?: Maybe<Array<Bag>>;
-  books?: Maybe<Array<Book>>;
-  getBagItems?: Maybe<Array<Item>>;
+  getBagKits: Array<Kit>;
+  getKitItems?: Maybe<Array<Item>>;
   getUserBags?: Maybe<Array<Bag>>;
   isUsernameAvailable: Scalars['Boolean'];
   items?: Maybe<Array<Item>>;
+  kits?: Maybe<Array<Kit>>;
   me?: Maybe<User>;
   users?: Maybe<Array<User>>;
 };
@@ -127,14 +148,13 @@ export type QueryBagsArgs = {
 };
 
 
-export type QueryBooksArgs = {
-  first?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+export type QueryGetBagKitsArgs = {
+  bag: Scalars['ID'];
 };
 
 
-export type QueryGetBagItemsArgs = {
-  bag: Scalars['ID'];
+export type QueryGetKitItemsArgs = {
+  kit: Scalars['ID'];
 };
 
 
@@ -149,6 +169,12 @@ export type QueryIsUsernameAvailableArgs = {
 
 
 export type QueryItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryKitsArgs = {
   first?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
 };
@@ -176,13 +202,13 @@ export type _BagsMeta = {
   count: Scalars['Int'];
 };
 
-export type _BooksMeta = {
-  __typename?: '_booksMeta';
+export type _ItemsMeta = {
+  __typename?: '_itemsMeta';
   count: Scalars['Int'];
 };
 
-export type _ItemsMeta = {
-  __typename?: '_itemsMeta';
+export type _KitsMeta = {
+  __typename?: '_kitsMeta';
   count: Scalars['Int'];
 };
 
@@ -191,13 +217,45 @@ export type _UsersMeta = {
   count: Scalars['Int'];
 };
 
-export type CreateBookMutationVariables = Exact<{
-  title: Scalars['String'];
-  author: Scalars['String'];
+export type AddBagKitMutationVariables = Exact<{
+  bag: Scalars['ID'];
+  kit: Scalars['ID'];
 }>;
 
 
-export type CreateBookMutation = { __typename?: 'Mutation', createBook: { __typename?: 'Book', id: string, title: string, author: string } };
+export type AddBagKitMutation = { __typename?: 'Mutation', addBagKit: { __typename?: 'Bag', id: string, kits: Array<{ __typename?: 'BagKit', kitId: string, isDefault: boolean }> } };
+
+export type MutationMutationVariables = Exact<{
+  name: Scalars['String'];
+  owner: Scalars['String'];
+}>;
+
+
+export type MutationMutation = { __typename?: 'Mutation', createBag: { __typename?: 'Bag', id: string, name: string } };
+
+export type CreateItemMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CreateItemMutation = { __typename?: 'Mutation', createItem: { __typename?: 'Item', id: string, name: string } };
+
+export type AddKitItemMutationVariables = Exact<{
+  kit: Scalars['ID'];
+  item: Scalars['ID'];
+  qty?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type AddKitItemMutation = { __typename?: 'Mutation', addKitItem: { __typename?: 'Kit', id: string, items?: Array<{ __typename?: 'KitItem', itemId: string, qty: number }> | null } };
+
+export type CreateKitMutationVariables = Exact<{
+  name: Scalars['String'];
+  owner: Scalars['String'];
+}>;
+
+
+export type CreateKitMutation = { __typename?: 'Mutation', createKit: { __typename?: 'Kit', id: string, type: string, name: string } };
 
 export type CreateUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -221,13 +279,26 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
-export type BooksQueryVariables = Exact<{
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
+export type GetBagKitsQueryVariables = Exact<{
+  bag: Scalars['ID'];
 }>;
 
 
-export type BooksQuery = { __typename?: 'Query', books?: Array<{ __typename?: 'Book', title: string, author: string, id: string }> | null, _booksMeta?: { __typename?: '_booksMeta', count: number } | null };
+export type GetBagKitsQuery = { __typename?: 'Query', getBagKits: Array<{ __typename?: 'Kit', id: string, type: string, name: string, owner: string, items?: Array<{ __typename?: 'KitItem', itemId: string, qty: number }> | null }> };
+
+export type GetKitItemsQueryVariables = Exact<{
+  kit: Scalars['ID'];
+}>;
+
+
+export type GetKitItemsQuery = { __typename?: 'Query', getKitItems?: Array<{ __typename?: 'Item', id: string, name: string, extUrl?: string | null }> | null };
+
+export type GetUserBagsQueryVariables = Exact<{
+  user: Scalars['ID'];
+}>;
+
+
+export type GetUserBagsQuery = { __typename?: 'Query', getUserBags?: Array<{ __typename?: 'Bag', id: string, name: string, kits: Array<{ __typename?: 'BagKit', kitId: string, isDefault: boolean }> }> | null };
 
 export type IsUsernameAvailableQueryVariables = Exact<{
   username: Scalars['String'];
@@ -242,42 +313,188 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, email: string, username: string } | null };
 
 
-export const CreateBookDocument = gql`
-    mutation CreateBook($title: String!, $author: String!) {
-  createBook(title: $title, author: $author) {
+export const AddBagKitDocument = gql`
+    mutation AddBagKit($bag: ID!, $kit: ID!) {
+  addBagKit(bag: $bag, kit: $kit) {
     id
-    title
-    author
+    kits {
+      kitId
+      isDefault
+    }
   }
 }
     `;
-export type CreateBookMutationFn = Apollo.MutationFunction<CreateBookMutation, CreateBookMutationVariables>;
+export type AddBagKitMutationFn = Apollo.MutationFunction<AddBagKitMutation, AddBagKitMutationVariables>;
 
 /**
- * __useCreateBookMutation__
+ * __useAddBagKitMutation__
  *
- * To run a mutation, you first call `useCreateBookMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateBookMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAddBagKitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddBagKitMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createBookMutation, { data, loading, error }] = useCreateBookMutation({
+ * const [addBagKitMutation, { data, loading, error }] = useAddBagKitMutation({
  *   variables: {
- *      title: // value for 'title'
- *      author: // value for 'author'
+ *      bag: // value for 'bag'
+ *      kit: // value for 'kit'
  *   },
  * });
  */
-export function useCreateBookMutation(baseOptions?: Apollo.MutationHookOptions<CreateBookMutation, CreateBookMutationVariables>) {
+export function useAddBagKitMutation(baseOptions?: Apollo.MutationHookOptions<AddBagKitMutation, AddBagKitMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateBookMutation, CreateBookMutationVariables>(CreateBookDocument, options);
+        return Apollo.useMutation<AddBagKitMutation, AddBagKitMutationVariables>(AddBagKitDocument, options);
       }
-export type CreateBookMutationHookResult = ReturnType<typeof useCreateBookMutation>;
-export type CreateBookMutationResult = Apollo.MutationResult<CreateBookMutation>;
-export type CreateBookMutationOptions = Apollo.BaseMutationOptions<CreateBookMutation, CreateBookMutationVariables>;
+export type AddBagKitMutationHookResult = ReturnType<typeof useAddBagKitMutation>;
+export type AddBagKitMutationResult = Apollo.MutationResult<AddBagKitMutation>;
+export type AddBagKitMutationOptions = Apollo.BaseMutationOptions<AddBagKitMutation, AddBagKitMutationVariables>;
+export const MutationDocument = gql`
+    mutation Mutation($name: String!, $owner: String!) {
+  createBag(name: $name, owner: $owner) {
+    id
+    name
+  }
+}
+    `;
+export type MutationMutationFn = Apollo.MutationFunction<MutationMutation, MutationMutationVariables>;
+
+/**
+ * __useMutationMutation__
+ *
+ * To run a mutation, you first call `useMutationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMutationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mutationMutation, { data, loading, error }] = useMutationMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function useMutationMutation(baseOptions?: Apollo.MutationHookOptions<MutationMutation, MutationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MutationMutation, MutationMutationVariables>(MutationDocument, options);
+      }
+export type MutationMutationHookResult = ReturnType<typeof useMutationMutation>;
+export type MutationMutationResult = Apollo.MutationResult<MutationMutation>;
+export type MutationMutationOptions = Apollo.BaseMutationOptions<MutationMutation, MutationMutationVariables>;
+export const CreateItemDocument = gql`
+    mutation CreateItem($name: String!) {
+  createItem(name: $name) {
+    id
+    name
+  }
+}
+    `;
+export type CreateItemMutationFn = Apollo.MutationFunction<CreateItemMutation, CreateItemMutationVariables>;
+
+/**
+ * __useCreateItemMutation__
+ *
+ * To run a mutation, you first call `useCreateItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createItemMutation, { data, loading, error }] = useCreateItemMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateItemMutation(baseOptions?: Apollo.MutationHookOptions<CreateItemMutation, CreateItemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateItemMutation, CreateItemMutationVariables>(CreateItemDocument, options);
+      }
+export type CreateItemMutationHookResult = ReturnType<typeof useCreateItemMutation>;
+export type CreateItemMutationResult = Apollo.MutationResult<CreateItemMutation>;
+export type CreateItemMutationOptions = Apollo.BaseMutationOptions<CreateItemMutation, CreateItemMutationVariables>;
+export const AddKitItemDocument = gql`
+    mutation AddKitItem($kit: ID!, $item: ID!, $qty: Int) {
+  addKitItem(kit: $kit, item: $item, qty: $qty) {
+    id
+    items {
+      itemId
+      qty
+    }
+  }
+}
+    `;
+export type AddKitItemMutationFn = Apollo.MutationFunction<AddKitItemMutation, AddKitItemMutationVariables>;
+
+/**
+ * __useAddKitItemMutation__
+ *
+ * To run a mutation, you first call `useAddKitItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddKitItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addKitItemMutation, { data, loading, error }] = useAddKitItemMutation({
+ *   variables: {
+ *      kit: // value for 'kit'
+ *      item: // value for 'item'
+ *      qty: // value for 'qty'
+ *   },
+ * });
+ */
+export function useAddKitItemMutation(baseOptions?: Apollo.MutationHookOptions<AddKitItemMutation, AddKitItemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddKitItemMutation, AddKitItemMutationVariables>(AddKitItemDocument, options);
+      }
+export type AddKitItemMutationHookResult = ReturnType<typeof useAddKitItemMutation>;
+export type AddKitItemMutationResult = Apollo.MutationResult<AddKitItemMutation>;
+export type AddKitItemMutationOptions = Apollo.BaseMutationOptions<AddKitItemMutation, AddKitItemMutationVariables>;
+export const CreateKitDocument = gql`
+    mutation CreateKit($name: String!, $owner: String!) {
+  createKit(name: $name, owner: $owner) {
+    id
+    type
+    name
+  }
+}
+    `;
+export type CreateKitMutationFn = Apollo.MutationFunction<CreateKitMutation, CreateKitMutationVariables>;
+
+/**
+ * __useCreateKitMutation__
+ *
+ * To run a mutation, you first call `useCreateKitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateKitMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createKitMutation, { data, loading, error }] = useCreateKitMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function useCreateKitMutation(baseOptions?: Apollo.MutationHookOptions<CreateKitMutation, CreateKitMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateKitMutation, CreateKitMutationVariables>(CreateKitDocument, options);
+      }
+export type CreateKitMutationHookResult = ReturnType<typeof useCreateKitMutation>;
+export type CreateKitMutationResult = Apollo.MutationResult<CreateKitMutation>;
+export type CreateKitMutationOptions = Apollo.BaseMutationOptions<CreateKitMutation, CreateKitMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($username: String!, $email: String!, $password: String!) {
   createUser(username: $username, email: $email, password: $password) {
@@ -382,47 +599,125 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const BooksDocument = gql`
-    query Books($skip: Int, $first: Int) {
-  books(skip: $skip, first: $first) {
-    title
-    author
+export const GetBagKitsDocument = gql`
+    query GetBagKits($bag: ID!) {
+  getBagKits(bag: $bag) {
     id
-  }
-  _booksMeta {
-    count
+    type
+    name
+    owner
+    items {
+      itemId
+      qty
+    }
   }
 }
     `;
 
 /**
- * __useBooksQuery__
+ * __useGetBagKitsQuery__
  *
- * To run a query within a React component, call `useBooksQuery` and pass it any options that fit your needs.
- * When your component renders, `useBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBagKitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBagKitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBooksQuery({
+ * const { data, loading, error } = useGetBagKitsQuery({
  *   variables: {
- *      skip: // value for 'skip'
- *      first: // value for 'first'
+ *      bag: // value for 'bag'
  *   },
  * });
  */
-export function useBooksQuery(baseOptions?: Apollo.QueryHookOptions<BooksQuery, BooksQueryVariables>) {
+export function useGetBagKitsQuery(baseOptions: Apollo.QueryHookOptions<GetBagKitsQuery, GetBagKitsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BooksQuery, BooksQueryVariables>(BooksDocument, options);
+        return Apollo.useQuery<GetBagKitsQuery, GetBagKitsQueryVariables>(GetBagKitsDocument, options);
       }
-export function useBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BooksQuery, BooksQueryVariables>) {
+export function useGetBagKitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBagKitsQuery, GetBagKitsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BooksQuery, BooksQueryVariables>(BooksDocument, options);
+          return Apollo.useLazyQuery<GetBagKitsQuery, GetBagKitsQueryVariables>(GetBagKitsDocument, options);
         }
-export type BooksQueryHookResult = ReturnType<typeof useBooksQuery>;
-export type BooksLazyQueryHookResult = ReturnType<typeof useBooksLazyQuery>;
-export type BooksQueryResult = Apollo.QueryResult<BooksQuery, BooksQueryVariables>;
+export type GetBagKitsQueryHookResult = ReturnType<typeof useGetBagKitsQuery>;
+export type GetBagKitsLazyQueryHookResult = ReturnType<typeof useGetBagKitsLazyQuery>;
+export type GetBagKitsQueryResult = Apollo.QueryResult<GetBagKitsQuery, GetBagKitsQueryVariables>;
+export const GetKitItemsDocument = gql`
+    query GetKitItems($kit: ID!) {
+  getKitItems(kit: $kit) {
+    id
+    name
+    extUrl
+  }
+}
+    `;
+
+/**
+ * __useGetKitItemsQuery__
+ *
+ * To run a query within a React component, call `useGetKitItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetKitItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetKitItemsQuery({
+ *   variables: {
+ *      kit: // value for 'kit'
+ *   },
+ * });
+ */
+export function useGetKitItemsQuery(baseOptions: Apollo.QueryHookOptions<GetKitItemsQuery, GetKitItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetKitItemsQuery, GetKitItemsQueryVariables>(GetKitItemsDocument, options);
+      }
+export function useGetKitItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetKitItemsQuery, GetKitItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetKitItemsQuery, GetKitItemsQueryVariables>(GetKitItemsDocument, options);
+        }
+export type GetKitItemsQueryHookResult = ReturnType<typeof useGetKitItemsQuery>;
+export type GetKitItemsLazyQueryHookResult = ReturnType<typeof useGetKitItemsLazyQuery>;
+export type GetKitItemsQueryResult = Apollo.QueryResult<GetKitItemsQuery, GetKitItemsQueryVariables>;
+export const GetUserBagsDocument = gql`
+    query GetUserBags($user: ID!) {
+  getUserBags(user: $user) {
+    id
+    name
+    kits {
+      kitId
+      isDefault
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserBagsQuery__
+ *
+ * To run a query within a React component, call `useGetUserBagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserBagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserBagsQuery({
+ *   variables: {
+ *      user: // value for 'user'
+ *   },
+ * });
+ */
+export function useGetUserBagsQuery(baseOptions: Apollo.QueryHookOptions<GetUserBagsQuery, GetUserBagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserBagsQuery, GetUserBagsQueryVariables>(GetUserBagsDocument, options);
+      }
+export function useGetUserBagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserBagsQuery, GetUserBagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserBagsQuery, GetUserBagsQueryVariables>(GetUserBagsDocument, options);
+        }
+export type GetUserBagsQueryHookResult = ReturnType<typeof useGetUserBagsQuery>;
+export type GetUserBagsLazyQueryHookResult = ReturnType<typeof useGetUserBagsLazyQuery>;
+export type GetUserBagsQueryResult = Apollo.QueryResult<GetUserBagsQuery, GetUserBagsQueryVariables>;
 export const IsUsernameAvailableDocument = gql`
     query IsUsernameAvailable($username: String!) {
   isUsernameAvailable(username: $username)

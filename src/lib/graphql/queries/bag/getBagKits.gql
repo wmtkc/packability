@@ -1,0 +1,12 @@
+query GetBagKits($bag: ID!) {
+    getBagKits(bag: $bag) {
+        id
+        type
+        name
+        owner
+        items {
+            itemId
+            qty
+        }
+    }
+}

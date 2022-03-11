@@ -1,0 +1,9 @@
+mutation AddBagKit($bag: ID!, $kit: ID!) {
+    addBagKit(bag: $bag, kit: $kit) {
+        id
+        kits {
+            kitId
+            isDefault
+        }
+    }
+}

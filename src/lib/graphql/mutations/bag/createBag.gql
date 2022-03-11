@@ -1,0 +1,6 @@
+mutation Mutation($name: String!, $owner: String!) {
+    createBag(name: $name, owner: $owner) {
+        id
+        name
+    }
+}

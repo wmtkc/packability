@@ -1,0 +1,10 @@
+query GetUserBags($user: ID!) {
+    getUserBags(user: $user) {
+        id
+        name
+        kits {
+            kitId
+            isDefault
+        }
+    }
+}
