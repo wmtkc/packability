@@ -1,6 +1,8 @@
-mutation CreateItem($name: String!) {
-    createItem(name: $name) {
+mutation CreateItem($name: String!, $type: ItemType!) {
+    createItem(name: $name, type: $type) {
         id
         name
+        type
+        extUrl
     }
 }
