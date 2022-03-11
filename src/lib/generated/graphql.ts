@@ -45,7 +45,14 @@ export type Item = {
   extUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  type: ItemType;
 };
+
+export enum ItemType {
+  Generic = 'GENERIC',
+  NonProduct = 'NON_PRODUCT',
+  Product = 'PRODUCT'
+}
 
 export type Kit = {
   __typename?: 'Kit';
@@ -102,6 +109,7 @@ export type MutationCreateBagArgs = {
 export type MutationCreateItemArgs = {
   extUrl?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  type: ItemType;
 };
 
 
@@ -235,10 +243,11 @@ export type MutationMutation = { __typename?: 'Mutation', createBag: { __typenam
 
 export type CreateItemMutationVariables = Exact<{
   name: Scalars['String'];
+  type: ItemType;
 }>;
 
 
-export type CreateItemMutation = { __typename?: 'Mutation', createItem: { __typename?: 'Item', id: string, name: string } };
+export type CreateItemMutation = { __typename?: 'Mutation', createItem: { __typename?: 'Item', id: string, name: string, type: ItemType, extUrl?: string | null } };
 
 export type AddKitItemMutationVariables = Exact<{
   kit: Scalars['ID'];
@@ -387,10 +396,12 @@ export type MutationMutationHookResult = ReturnType<typeof useMutationMutation>;
 export type MutationMutationResult = Apollo.MutationResult<MutationMutation>;
 export type MutationMutationOptions = Apollo.BaseMutationOptions<MutationMutation, MutationMutationVariables>;
 export const CreateItemDocument = gql`
-    mutation CreateItem($name: String!) {
-  createItem(name: $name) {
+    mutation CreateItem($name: String!, $type: ItemType!) {
+  createItem(name: $name, type: $type) {
     id
     name
+    type
+    extUrl
   }
 }
     `;
@@ -410,6 +421,7 @@ export type CreateItemMutationFn = Apollo.MutationFunction<CreateItemMutation, C
  * const [createItemMutation, { data, loading, error }] = useCreateItemMutation({
  *   variables: {
  *      name: // value for 'name'
+ *      type: // value for 'type'
  *   },
  * });
  */
