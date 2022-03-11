@@ -61,7 +61,7 @@ export type Kit = {
   items?: Maybe<Array<KitItem>>;
   name: Scalars['String'];
   owner: Scalars['ID'];
-  type: Scalars['String'];
+  type: KitType;
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
@@ -71,6 +71,11 @@ export type KitItem = {
   itemId: Scalars['ID'];
   qty: Scalars['Int'];
 };
+
+export enum KitType {
+  Default = 'DEFAULT',
+  None = 'NONE'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -255,7 +260,7 @@ export type CreateKitMutationVariables = Exact<{
 }>;
 
 
-export type CreateKitMutation = { __typename?: 'Mutation', createKit: { __typename?: 'Kit', id: string, type: string, name: string } };
+export type CreateKitMutation = { __typename?: 'Mutation', createKit: { __typename?: 'Kit', id: string, type: KitType, name: string } };
 
 export type AddKitItemMutationVariables = Exact<{
   kit: Scalars['ID'];
@@ -293,7 +298,7 @@ export type GetBagKitsQueryVariables = Exact<{
 }>;
 
 
-export type GetBagKitsQuery = { __typename?: 'Query', getBagKits: Array<{ __typename?: 'Kit', id: string, type: string, name: string, owner: string, items?: Array<{ __typename?: 'KitItem', itemId: string, qty: number }> | null }> };
+export type GetBagKitsQuery = { __typename?: 'Query', getBagKits: Array<{ __typename?: 'Kit', id: string, type: KitType, name: string, owner: string, items?: Array<{ __typename?: 'KitItem', itemId: string, qty: number }> | null }> };
 
 export type GetKitItemsQueryVariables = Exact<{
   kit: Scalars['ID'];
