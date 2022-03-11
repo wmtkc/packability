@@ -1,3 +1,9 @@
+mutation CreateUser($username: String!, $email: String!, $password: String!) {
+    createUser(username: $username, email: $email, password: $password) {
+        id
+    }
+}
+
 mutation Login($usernameOrEmail: String!, $password: String!) {
     login(usernameOrEmail: $usernameOrEmail, password: $password) {
         accessToken
@@ -7,4 +13,8 @@ mutation Login($usernameOrEmail: String!, $password: String!) {
             username
         }
     }
+}
+
+mutation Logout {
+    logout
 }

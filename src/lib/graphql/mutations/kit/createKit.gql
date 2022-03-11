@@ -1,7 +1,0 @@
-mutation CreateKit($name: String!, $owner: String!) {
-    createKit(name: $name, owner: $owner) {
-        id
-        type
-        name
-    }
-}

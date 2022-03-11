@@ -1,3 +1,10 @@
+mutation CreateBag($name: String!, $owner: String!) {
+    createBag(name: $name, owner: $owner) {
+        id
+        name
+    }
+}
+
 mutation AddBagKit($bag: ID!, $kit: ID!) {
     addBagKit(bag: $bag, kit: $kit) {
         id

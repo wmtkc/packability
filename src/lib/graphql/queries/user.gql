@@ -1,0 +1,22 @@
+query Me {
+    me {
+        id
+        email
+        username
+    }
+}
+
+query IsUsernameAvailable($username: String!) {
+    isUsernameAvailable(username: $username)
+}
+
+query GetUserBags($user: ID!) {
+    getUserBags(user: $user) {
+        id
+        name
+        kits {
+            kitId
+            isDefault
+        }
+    }
+}

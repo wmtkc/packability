@@ -1,3 +1,11 @@
+mutation CreateKit($name: String!, $owner: String!) {
+    createKit(name: $name, owner: $owner) {
+        id
+        type
+        name
+    }
+}
+
 mutation AddKitItem($kit: ID!, $item: ID!, $qty: Int) {
     addKitItem(kit: $kit, item: $item, qty: $qty) {
         id
