@@ -2,6 +2,10 @@ mutation CreateBag($name: String!, $owner: String!) {
     createBag(name: $name, owner: $owner) {
         id
         name
+        kits {
+            kitId
+            isDefault
+        }
     }
 }
 
