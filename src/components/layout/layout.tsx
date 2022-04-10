@@ -18,9 +18,9 @@ function Layout({ children }: { children: ReactNode }) {
                 <Flex
                     h="100%"
                     w="100%"
-                    pt="10vh"
+                    pt="2.5vh"
+                    flexDir="column"
                     alignItems="center"
-                    justifyContent="center"
                     overflow="scroll">
                     {children}
                 </Flex>

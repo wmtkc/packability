@@ -75,6 +75,7 @@ function LoginForm() {
             flexDir="column"
             background={formBackground}
             w="20rem"
+            h="fit-content"
             p={12}
             rounded={6}
             onKeyPress={event => {

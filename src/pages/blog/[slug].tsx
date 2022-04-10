@@ -1,4 +1,5 @@
 // @ts-ignore
+import { Flex } from '@chakra-ui/react'
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,7 +14,6 @@ import getBlogIndex from '../../lib/notion/getBlogIndex'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
 import getPageData from '../../lib/notion/getPageData'
 import { textBlock } from '../../lib/notion/renderers'
-import blogStyles from '../../styles/blog.module.css'
 
 // Get the data for each blog post
 export async function getStaticProps({
@@ -144,7 +144,7 @@ const RenderPost = ({
     // loading one from fallback then  redirect back to the index
     if (!post) {
         return (
-            <div className={blogStyles.post}>
+            <div>
                 <p>
                     Woops! didn't find that post, redirecting you back to the
                     blog index
@@ -156,30 +156,24 @@ const RenderPost = ({
     return (
         <>
             {preview && (
-                <div className={blogStyles.previewAlertContainer}>
-                    <div className={blogStyles.previewAlert}>
+                <div>
+                    <div>
                         <b>Note:</b>
                         {` `}Viewing in preview mode{' '}
                         <Link
                             href={`/api/clear-preview?slug=${post.Slug}`}
                             passHref>
-                            <button className={blogStyles.escapePreview}>
-                                Exit Preview
-                            </button>
+                            <button>Exit Preview</button>
                         </Link>
                     </div>
                 </div>
             )}
-            <div className={blogStyles.post}>
+            <Flex flexDir="column" w="80%">
                 <h1>{post.Page || ''}</h1>
                 {post.Authors.length > 0 && (
-                    <div className="authors">By: {post.Authors.join(' ')}</div>
+                    <div>By: {post.Authors.join(' ')}</div>
                 )}
-                {post.Date && (
-                    <div className="posted">
-                        Posted: {getDateStr(post.Date)}
-                    </div>
-                )}
+                {post.Date && <div>Posted: {getDateStr(post.Date)}</div>}
 
                 <hr />
 
@@ -277,73 +271,30 @@ const RenderPost = ({
                         const { bookmark_icon: icon, bookmark_cover: cover } =
                             format
                         toRender.push(
-                            <div className={blogStyles.bookmark}>
+                            <div>
                                 <div>
                                     <div style={{ display: 'flex' }}>
                                         <a
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className={
-                                                blogStyles.bookmarkContentsWrapper
-                                            }
                                             href={link}>
-                                            <div
-                                                role="button"
-                                                className={
-                                                    blogStyles.bookmarkContents
-                                                }>
-                                                <div
-                                                    className={
-                                                        blogStyles.bookmarkInfo
-                                                    }>
-                                                    <div
-                                                        className={
-                                                            blogStyles.bookmarkTitle
-                                                        }>
-                                                        {title}
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            blogStyles.bookmarkDescription
-                                                        }>
-                                                        {description}
-                                                    </div>
-                                                    <div
-                                                        className={
-                                                            blogStyles.bookmarkLinkWrapper
-                                                        }>
+                                            <div role="button">
+                                                <div>
+                                                    <div>{title}</div>
+                                                    <div>{description}</div>
+                                                    <div>
                                                         <Image
                                                             src={icon}
-                                                            className={
-                                                                blogStyles.bookmarkLinkIcon
-                                                            }
                                                             alt="bookmark link icon"
                                                         />
-                                                        <div
-                                                            className={
-                                                                blogStyles.bookmarkLink
-                                                            }>
-                                                            {link}
-                                                        </div>
+                                                        <div>{link}</div>
                                                     </div>
                                                 </div>
-                                                <div
-                                                    className={
-                                                        blogStyles.bookmarkCoverWrapper1
-                                                    }>
-                                                    <div
-                                                        className={
-                                                            blogStyles.bookmarkCoverWrapper2
-                                                        }>
-                                                        <div
-                                                            className={
-                                                                blogStyles.bookmarkCoverWrapper3
-                                                            }>
+                                                <div>
+                                                    <div>
+                                                        <div>
                                                             <Image
                                                                 src={cover}
-                                                                className={
-                                                                    blogStyles.bookmarkCover
-                                                                }
                                                                 alt="bookmark cover"
                                                             />
                                                         </div>
@@ -420,11 +371,6 @@ const RenderPost = ({
                                         style={childStyle}
                                         src={display_source}
                                         key={!useWrapper ? id : undefined}
-                                        className={
-                                            !useWrapper
-                                                ? 'asset-wrapper'
-                                                : undefined
-                                        }
                                     />
                                 )
                             } else {
@@ -456,7 +402,6 @@ const RenderPost = ({
                                             )}%`,
                                             position: 'relative',
                                         }}
-                                        className="asset-wrapper"
                                         key={id}>
                                         {child}
                                     </div>
@@ -528,11 +473,11 @@ const RenderPost = ({
                         }
                         case 'callout': {
                             toRender.push(
-                                <div className="callout" key={id}>
+                                <div key={id}>
                                     {value.format?.page_icon && (
                                         <div>{value.format?.page_icon}</div>
                                     )}
-                                    <div className="text">
+                                    <div>
                                         {textBlock(properties.title, true, id)}
                                     </div>
                                 </div>,
@@ -577,7 +522,7 @@ const RenderPost = ({
                     }
                     return toRender
                 })}
-            </div>
+            </Flex>
         </>
     )
 }

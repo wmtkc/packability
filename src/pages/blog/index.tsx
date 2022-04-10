@@ -1,3 +1,4 @@
+import { Box, Flex, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 
 import {
@@ -8,8 +9,6 @@ import {
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
 import { textBlock } from '../../lib/notion/renderers'
-import blogStyles from '../../styles/blog.module.css'
-import sharedStyles from '../../styles/shared.module.css'
 
 export async function getStaticProps({ preview }: { preview: any }) {
     const postsTable = await getBlogIndex()
@@ -49,49 +48,39 @@ const Index = ({ posts = [], preview }: { posts: []; preview: any }) => {
     return (
         <>
             {preview && (
-                <div className={blogStyles.previewAlertContainer}>
-                    <div className={blogStyles.previewAlert}>
+                <div>
+                    <div>
                         <b>Note:</b>
                         {` `}Viewing in preview mode{' '}
                         <Link href={`/api/clear-preview`} passHref>
-                            <button className={blogStyles.escapePreview}>
-                                Exit Preview
-                            </button>
+                            <button>Exit Preview</button>
                         </Link>
                     </div>
                 </div>
             )}
-            <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-                <h1>My Notion Blog</h1>
-                {posts.length === 0 && (
-                    <p className={blogStyles.noPosts}>There are no posts yet</p>
-                )}
+            <Flex flexDir="column">
+                <Heading fontSize="3xl" mb={18}>
+                    Blog
+                </Heading>
+                {posts.length === 0 && <p>There are no posts yet</p>}
                 {posts.map((post: any) => {
                     return (
-                        <div className={blogStyles.postPreview} key={post.Slug}>
-                            <h3>
-                                <span className={blogStyles.titleContainer}>
-                                    {!post.Published && (
-                                        <span className={blogStyles.draftBadge}>
-                                            Draft
-                                        </span>
-                                    )}
+                        <Box mb={12}>
+                            <Heading fontSize="xl">
+                                <span>
+                                    {!post.Published && <span>Draft</span>}
                                     <Link
                                         href="/blog/[slug]"
                                         as={getBlogLink(post.Slug)}>
                                         <a>{post.Page}</a>
                                     </Link>
                                 </span>
-                            </h3>
+                            </Heading>
                             {post.Authors.length > 0 && (
-                                <div className="authors">
-                                    By: {post.Authors.join(' ')}
-                                </div>
+                                <div>By: {post.Authors.join(' ')}</div>
                             )}
                             {post.Date && (
-                                <div className="posted">
-                                    Posted: {getDateStr(post.Date)}
-                                </div>
+                                <div>Posted: {getDateStr(post.Date)}</div>
                             )}
                             <p>
                                 {(!post.preview || post.preview.length === 0) &&
@@ -105,10 +94,10 @@ const Index = ({ posts = [], preview }: { posts: []; preview: any }) => {
                                         ),
                                 )}
                             </p>
-                        </div>
+                        </Box>
                     )
                 })}
-            </div>
+            </Flex>
         </>
     )
 }
