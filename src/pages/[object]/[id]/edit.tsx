@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import Error from '@pages/_error'
 
-import { objectSlug } from '@lib/data-objects'
+import { ObjectSlug } from '@lib/data-objects'
 
 function EditObject() {
     const router = useRouter()
@@ -12,11 +12,11 @@ function EditObject() {
     const id = router.query.id
     // TODO: check if current user owns this object, otherwise redirect to index: /[object]/[id]
     switch (objSlug) {
-        case objectSlug.bag:
+        case ObjectSlug.bag:
             return <Box>Edit Bag {id}</Box>
-        case objectSlug.item:
+        case ObjectSlug.item:
             return <Box>Edit Item {id}</Box>
-        case objectSlug.kit:
+        case ObjectSlug.kit:
             return <Box>Edit Kit {id}</Box>
         default:
             return <Error statusCode={404} />

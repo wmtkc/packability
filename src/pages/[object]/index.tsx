@@ -10,14 +10,15 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 
 import Error from '@pages/_error'
 
 import CreateBagForm from '@components/forms/createBag'
 import CreateItemForm from '@components/forms/createItem'
+import CreateKitForm from '@components/forms/createKit'
 
-import { objectSlug } from '@lib/data-objects'
+import { ObjectName, ObjectSlug } from '@lib/data-objects'
 
 function BrowseObjects() {
     const router = useRouter()
@@ -29,39 +30,44 @@ function BrowseObjects() {
         onClose: createModalClose,
     } = useDisclosure()
 
+    const BrowseLayout = ({
+        object,
+        ModalForm,
+    }: {
+        object: ObjectName
+        ModalForm: ReactElement
+    }) => (
+        <>
+            <Box>
+                <Button textTransform="capitalize" onClick={createModalOpen}>
+                    New {object}
+                </Button>
+                <Box textTransform="capitalize">Browse {object}s</Box>
+            </Box>
+            <Modal isOpen={createModalIsOpen} onClose={createModalClose}>
+                <ModalOverlay />
+                {ModalForm}
+            </Modal>
+        </>
+    )
+
+    let modalForm = <></>
     switch (objSlug) {
-        case objectSlug.bag:
+        case ObjectSlug.bag:
+            modalForm = <CreateBagForm onClose={createModalClose} />
             return (
-                <>
-                    <Box>
-                        <Button onClick={createModalOpen}>New Bag</Button>
-                        <Box>Browse Bags</Box>
-                    </Box>
-                    <Modal
-                        isOpen={createModalIsOpen}
-                        onClose={createModalClose}>
-                        <ModalOverlay />
-                        <CreateBagForm onClose={createModalClose} />
-                    </Modal>
-                </>
+                <BrowseLayout object={ObjectName.bag} ModalForm={modalForm} />
             )
-        case objectSlug.item:
+        case ObjectSlug.item:
+            modalForm = <CreateItemForm onClose={createModalClose} />
             return (
-                <>
-                    <Box>
-                        <Button onClick={createModalOpen}>New Item</Button>
-                        <Box>Browse Items</Box>
-                    </Box>
-                    <Modal
-                        isOpen={createModalIsOpen}
-                        onClose={createModalClose}>
-                        <ModalOverlay />
-                        <CreateItemForm onClose={createModalClose} />
-                    </Modal>
-                </>
+                <BrowseLayout object={ObjectName.item} ModalForm={modalForm} />
             )
-        case objectSlug.kit:
-            return <Box>Browse Kits</Box>
+        case ObjectSlug.kit:
+            modalForm = <CreateKitForm onClose={createModalClose} />
+            return (
+                <BrowseLayout object={ObjectName.kit} ModalForm={modalForm} />
+            )
         default:
             return <Error statusCode={404} />
     }

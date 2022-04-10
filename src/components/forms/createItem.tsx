@@ -90,6 +90,7 @@ function CreateItemForm({ onClose }: { onClose: () => void }) {
                     required
                 />
                 <RadioGroup
+                    mb={12}
                     onChange={(nextValue: ItemType) => {
                         setState({ ...state, type: nextValue })
                     }}

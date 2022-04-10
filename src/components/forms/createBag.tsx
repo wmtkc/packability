@@ -72,7 +72,7 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
                 </Heading>
                 <Input
                     variant="filled"
-                    mb={6}
+                    mb={12}
                     value={state.name}
                     onChange={handleChange}
                     name="name"
