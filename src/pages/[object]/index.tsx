@@ -15,6 +15,7 @@ import { useState } from 'react'
 import Error from '@pages/_error'
 
 import CreateBagForm from '@components/forms/createBag'
+import CreateItemForm from '@components/forms/createItem'
 
 import { objectSlug } from '@lib/data-objects'
 
@@ -45,7 +46,20 @@ function BrowseObjects() {
                 </>
             )
         case objectSlug.item:
-            return <Box>Browse Items</Box>
+            return (
+                <>
+                    <Box>
+                        <Button onClick={createModalOpen}>New Item</Button>
+                        <Box>Browse Items</Box>
+                    </Box>
+                    <Modal
+                        isOpen={createModalIsOpen}
+                        onClose={createModalClose}>
+                        <ModalOverlay />
+                        <CreateItemForm onClose={createModalClose} />
+                    </Modal>
+                </>
+            )
         case objectSlug.kit:
             return <Box>Browse Kits</Box>
         default:

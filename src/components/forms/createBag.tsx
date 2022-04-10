@@ -61,12 +61,7 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
         <ModalContent>
             <ModalHeader>Create Bag</ModalHeader>
             <FormControl
-                display="flex"
-                flexDir="column"
-                background={formBackground}
-                w="20rem"
                 p={12}
-                rounded={6}
                 onKeyPress={event => {
                     if (event.key === 'Enter') {
                         handleSubmit()
