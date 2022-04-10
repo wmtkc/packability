@@ -10,7 +10,7 @@ function EditObject() {
     const router = useRouter()
     const objSlug = router.query.object
     const id = router.query.id
-    // check if current user owns this object, otherwise redirect to index: /[object]/[id]
+    // TODO: check if current user owns this object, otherwise redirect to index: /[object]/[id]
     switch (objSlug) {
         case objectSlug.bag:
             return <Box>Edit Bag {id}</Box>
