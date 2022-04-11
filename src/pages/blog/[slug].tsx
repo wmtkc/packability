@@ -1,5 +1,5 @@
-// @ts-ignore
 import { Flex } from '@chakra-ui/react'
+// @ts-ignore
 import ReactJSXParser from '@zeit/react-jsx-parser'
 import Image from 'next/image'
 import Link from 'next/link'

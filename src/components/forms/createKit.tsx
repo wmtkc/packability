@@ -62,9 +62,10 @@ function CreateKitForm({ onClose }: { onClose: () => void }) {
             <ModalHeader>Create Kit</ModalHeader>
             <FormControl
                 p={12}
-                onKeyPress={event => {
+                onKeyPress={async event => {
                     if (event.key === 'Enter') {
-                        handleSubmit()
+                        await handleSubmit()
+                        onClose()
                     }
                 }}>
                 <Heading mb={6} fontSize="xl">
@@ -86,8 +87,8 @@ function CreateKitForm({ onClose }: { onClose: () => void }) {
                     <Button
                         colorScheme="teal"
                         type="submit"
-                        onClick={() => {
-                            handleSubmit()
+                        onClick={async () => {
+                            await handleSubmit()
                             onClose()
                         }}>
                         Create

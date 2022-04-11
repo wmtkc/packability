@@ -51,6 +51,7 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
             const res = await createBag({
                 variables: { name: state.name, owner: me.id },
             })
+            console.dir(res)
             router.push('/bags/' + res.data.createBag.id + '/edit')
         } catch (err) {
             // Toast
@@ -62,9 +63,10 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
             <ModalHeader>Create Bag</ModalHeader>
             <FormControl
                 p={12}
-                onKeyPress={event => {
+                onKeyPress={async event => {
                     if (event.key === 'Enter') {
-                        handleSubmit()
+                        await handleSubmit()
+                        onClose()
                     }
                 }}>
                 <Heading mb={6} fontSize="xl">
@@ -86,8 +88,8 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
                     <Button
                         colorScheme="teal"
                         type="submit"
-                        onClick={() => {
-                            handleSubmit()
+                        onClick={async () => {
+                            await handleSubmit()
                             onClose()
                         }}>
                         Create

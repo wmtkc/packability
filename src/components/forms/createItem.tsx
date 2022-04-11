@@ -72,9 +72,10 @@ function CreateItemForm({ onClose }: { onClose: () => void }) {
             <ModalHeader>Create Item</ModalHeader>
             <FormControl
                 p={12}
-                onKeyPress={event => {
+                onKeyPress={async event => {
                     if (event.key === 'Enter') {
-                        handleSubmit()
+                        await handleSubmit()
+                        onClose()
                     }
                 }}>
                 <Heading mb={6} fontSize="xl">
@@ -128,8 +129,8 @@ function CreateItemForm({ onClose }: { onClose: () => void }) {
                     <Button
                         colorScheme="teal"
                         type="submit"
-                        onClick={() => {
-                            handleSubmit()
+                        onClick={async () => {
+                            await handleSubmit()
                             onClose()
                         }}>
                         Create
