@@ -51,7 +51,6 @@ function CreateBagForm({ onClose }: { onClose: () => void }) {
             const res = await createBag({
                 variables: { name: state.name, owner: me.id },
             })
-            console.dir(res)
             router.push('/bags/' + res.data.createBag.id + '/edit')
         } catch (err) {
             // Toast
