@@ -1,3 +1,18 @@
+query Bags($skip: Int, $first: Int) {
+    bags(skip: $skip, first: $first) {
+        id
+        name
+        owner {
+            id
+            username
+            name
+        }
+    }
+    _bagsMeta {
+        count
+    }
+}
+
 query GetBagKits($bag: ID!) {
     getBagKits(bag: $bag) {
         id

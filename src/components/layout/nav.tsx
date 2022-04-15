@@ -59,7 +59,7 @@ function Nav() {
     // TODO: figure out collapse
     return (
         <Flex
-            pos="absolute"
+            pos="relative"
             direction="column"
             h="95vh"
             mt="2.5vh"

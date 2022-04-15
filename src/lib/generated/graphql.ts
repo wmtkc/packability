@@ -28,7 +28,7 @@ export type Bag = {
   id: Scalars['ID'];
   kits: Array<BagKit>;
   name: Scalars['String'];
-  owner: Scalars['ID'];
+  owner: User;
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
@@ -74,7 +74,8 @@ export type KitItem = {
 
 export enum KitType {
   Default = 'DEFAULT',
-  None = 'NONE'
+  None = 'NONE',
+  Wishlist = 'WISHLIST'
 }
 
 export type Mutation = {
@@ -204,6 +205,7 @@ export type User = {
   createdAt?: Maybe<Scalars['Date']>;
   email: Scalars['String'];
   id: Scalars['ID'];
+  kits?: Maybe<Array<Scalars['ID']>>;
   name?: Maybe<Scalars['String']>;
   passwordHash?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Date']>;
@@ -236,7 +238,7 @@ export type CreateBagMutationVariables = Exact<{
 }>;
 
 
-export type CreateBagMutation = { __typename?: 'Mutation', createBag: { __typename?: 'Bag', id: string, name: string } };
+export type CreateBagMutation = { __typename?: 'Mutation', createBag: { __typename?: 'Bag', id: string, name: string, kits: Array<{ __typename?: 'BagKit', kitId: string, isDefault: boolean }> } };
 
 export type AddBagKitMutationVariables = Exact<{
   bag: Scalars['ID'];
@@ -293,12 +295,36 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
+export type BagsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type BagsQuery = { __typename?: 'Query', bags?: Array<{ __typename?: 'Bag', id: string, name: string, owner: { __typename?: 'User', id: string, username: string, name?: string | null } }> | null, _bagsMeta?: { __typename?: '_bagsMeta', count: number } | null };
+
 export type GetBagKitsQueryVariables = Exact<{
   bag: Scalars['ID'];
 }>;
 
 
 export type GetBagKitsQuery = { __typename?: 'Query', getBagKits: Array<{ __typename?: 'Kit', id: string, type: KitType, name: string, owner: string, items?: Array<{ __typename?: 'KitItem', itemId: string, qty: number }> | null }> };
+
+export type ItemsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ItemsQuery = { __typename?: 'Query', items?: Array<{ __typename?: 'Item', id: string, type: ItemType, name: string, extUrl?: string | null }> | null, _itemsMeta?: { __typename?: '_itemsMeta', count: number } | null };
+
+export type KitsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type KitsQuery = { __typename?: 'Query', kits?: Array<{ __typename?: 'Kit', id: string, type: KitType, name: string, owner: string }> | null, _kitsMeta?: { __typename?: '_kitsMeta', count: number } | null };
 
 export type GetKitItemsQueryVariables = Exact<{
   kit: Scalars['ID'];
@@ -332,6 +358,10 @@ export const CreateBagDocument = gql`
   createBag(name: $name, owner: $owner) {
     id
     name
+    kits {
+      kitId
+      isDefault
+    }
   }
 }
     `;
@@ -616,6 +646,51 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const BagsDocument = gql`
+    query Bags($skip: Int, $first: Int) {
+  bags(skip: $skip, first: $first) {
+    id
+    name
+    owner {
+      id
+      username
+      name
+    }
+  }
+  _bagsMeta {
+    count
+  }
+}
+    `;
+
+/**
+ * __useBagsQuery__
+ *
+ * To run a query within a React component, call `useBagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBagsQuery({
+ *   variables: {
+ *      skip: // value for 'skip'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useBagsQuery(baseOptions?: Apollo.QueryHookOptions<BagsQuery, BagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BagsQuery, BagsQueryVariables>(BagsDocument, options);
+      }
+export function useBagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BagsQuery, BagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BagsQuery, BagsQueryVariables>(BagsDocument, options);
+        }
+export type BagsQueryHookResult = ReturnType<typeof useBagsQuery>;
+export type BagsLazyQueryHookResult = ReturnType<typeof useBagsLazyQuery>;
+export type BagsQueryResult = Apollo.QueryResult<BagsQuery, BagsQueryVariables>;
 export const GetBagKitsDocument = gql`
     query GetBagKits($bag: ID!) {
   getBagKits(bag: $bag) {
@@ -658,6 +733,90 @@ export function useGetBagKitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetBagKitsQueryHookResult = ReturnType<typeof useGetBagKitsQuery>;
 export type GetBagKitsLazyQueryHookResult = ReturnType<typeof useGetBagKitsLazyQuery>;
 export type GetBagKitsQueryResult = Apollo.QueryResult<GetBagKitsQuery, GetBagKitsQueryVariables>;
+export const ItemsDocument = gql`
+    query Items($skip: Int, $first: Int) {
+  items(skip: $skip, first: $first) {
+    id
+    type
+    name
+    extUrl
+  }
+  _itemsMeta {
+    count
+  }
+}
+    `;
+
+/**
+ * __useItemsQuery__
+ *
+ * To run a query within a React component, call `useItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useItemsQuery({
+ *   variables: {
+ *      skip: // value for 'skip'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useItemsQuery(baseOptions?: Apollo.QueryHookOptions<ItemsQuery, ItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ItemsQuery, ItemsQueryVariables>(ItemsDocument, options);
+      }
+export function useItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ItemsQuery, ItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ItemsQuery, ItemsQueryVariables>(ItemsDocument, options);
+        }
+export type ItemsQueryHookResult = ReturnType<typeof useItemsQuery>;
+export type ItemsLazyQueryHookResult = ReturnType<typeof useItemsLazyQuery>;
+export type ItemsQueryResult = Apollo.QueryResult<ItemsQuery, ItemsQueryVariables>;
+export const KitsDocument = gql`
+    query Kits($skip: Int, $first: Int) {
+  kits(skip: $skip, first: $first) {
+    id
+    type
+    name
+    owner
+  }
+  _kitsMeta {
+    count
+  }
+}
+    `;
+
+/**
+ * __useKitsQuery__
+ *
+ * To run a query within a React component, call `useKitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useKitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useKitsQuery({
+ *   variables: {
+ *      skip: // value for 'skip'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useKitsQuery(baseOptions?: Apollo.QueryHookOptions<KitsQuery, KitsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<KitsQuery, KitsQueryVariables>(KitsDocument, options);
+      }
+export function useKitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<KitsQuery, KitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<KitsQuery, KitsQueryVariables>(KitsDocument, options);
+        }
+export type KitsQueryHookResult = ReturnType<typeof useKitsQuery>;
+export type KitsLazyQueryHookResult = ReturnType<typeof useKitsLazyQuery>;
+export type KitsQueryResult = Apollo.QueryResult<KitsQuery, KitsQueryVariables>;
 export const GetKitItemsDocument = gql`
     query GetKitItems($kit: ID!) {
   getKitItems(kit: $kit) {

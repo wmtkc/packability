@@ -105,7 +105,7 @@ function CreateItemForm({ onClose }: { onClose: () => void }) {
                             </Box>
                         </Tooltip>
                         <Tooltip
-                            label="This item is one-of-a-kind"
+                            label="This item is one-of-a-kind or unpurchaseable"
                             placement="right">
                             <Box width="fit-content">
                                 <Radio value={ItemType.NonProduct}>

@@ -1,0 +1,11 @@
+query Items($skip: Int, $first: Int) {
+    items(skip: $skip, first: $first) {
+        id
+        type
+        name
+        extUrl
+    }
+    _itemsMeta {
+        count
+    }
+}

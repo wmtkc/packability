@@ -20,8 +20,7 @@ function Layout({ children }: { children: ReactNode }) {
                     w="100%"
                     pt="2.5vh"
                     flexDir="column"
-                    alignItems="center"
-                    overflow="scroll">
+                    alignItems="center">
                     {children}
                 </Flex>
             </Flex>

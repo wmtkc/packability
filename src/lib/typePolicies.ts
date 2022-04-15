@@ -10,7 +10,9 @@ export const typePolicies = {
                     return appConfigVar()
                 },
             },
-            books: concatPagination(),
+            bags: concatPagination(),
+            items: concatPagination(),
+            kits: concatPagination(),
         },
     },
 }

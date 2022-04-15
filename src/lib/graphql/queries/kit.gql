@@ -1,3 +1,15 @@
+query Kits($skip: Int, $first: Int) {
+    kits(skip: $skip, first: $first) {
+        id
+        type
+        name
+        owner
+    }
+    _kitsMeta {
+        count
+    }
+}
+
 query GetKitItems($kit: ID!) {
     getKitItems(kit: $kit) {
         id

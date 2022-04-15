@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     Flex,
+    Heading,
     Modal,
     ModalOverlay,
     useDisclosure,
@@ -15,6 +16,7 @@ import Error from '@pages/_error'
 import CreateBagForm from '@components/forms/createBag'
 import CreateItemForm from '@components/forms/createItem'
 import CreateKitForm from '@components/forms/createKit'
+import BrowseObject from '@components/layout/browseObject'
 
 import { ObjectName, ObjectSlug } from '@lib/data-objects'
 
@@ -30,18 +32,31 @@ function BrowseObjects() {
 
     const BrowseLayout = ({
         object,
+        slug,
         children,
     }: {
         object: ObjectName
+        slug: ObjectSlug
         children: ReactNode
     }) => (
         <>
-            <Flex w="90%" justifyContent="flex-end">
+            <Flex
+                w="100%"
+                px={12}
+                mt={2}
+                pb={5}
+                borderBottom="2px solid white"
+                boxShadow="md"
+                justifyContent="space-between"
+                position="sticky">
+                <Heading fontSize="3xl" textTransform="capitalize">
+                    Browse {object}s
+                </Heading>
                 <Button textTransform="capitalize" onClick={createModalOpen}>
                     + New {object}
                 </Button>
             </Flex>
-            <Box textTransform="capitalize">Browse {object}s</Box>
+            <BrowseObject objSlug={slug} />
             <Modal isOpen={createModalIsOpen} onClose={createModalClose}>
                 <ModalOverlay />
                 {children}
@@ -52,19 +67,19 @@ function BrowseObjects() {
     switch (objSlug) {
         case ObjectSlug.bag:
             return (
-                <BrowseLayout object={ObjectName.bag}>
+                <BrowseLayout object={ObjectName.bag} slug={objSlug}>
                     <CreateBagForm onClose={createModalClose} />
                 </BrowseLayout>
             )
         case ObjectSlug.item:
             return (
-                <BrowseLayout object={ObjectName.item}>
+                <BrowseLayout object={ObjectName.item} slug={objSlug}>
                     <CreateItemForm onClose={createModalClose} />
                 </BrowseLayout>
             )
         case ObjectSlug.kit:
             return (
-                <BrowseLayout object={ObjectName.kit}>
+                <BrowseLayout object={ObjectName.kit} slug={objSlug}>
                     <CreateKitForm onClose={createModalClose} />
                 </BrowseLayout>
             )
