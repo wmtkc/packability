@@ -19,8 +19,12 @@ import CreateKitForm from '@components/forms/createKit'
 import BrowseObject from '@components/layout/browseObject'
 
 import { ObjectName, ObjectSlug } from '@lib/data-objects'
+import { useMeQuery } from '@lib/generated/graphql'
 
 function BrowseObjects() {
+    const { data, loading } = useMeQuery()
+    const loggedIn = !loading && data && data.me
+
     const router = useRouter()
     const objSlug = router.query.object
 
@@ -52,9 +56,15 @@ function BrowseObjects() {
                 <Heading fontSize="3xl" textTransform="capitalize">
                     Browse {object}s
                 </Heading>
-                <Button textTransform="capitalize" onClick={createModalOpen}>
-                    + New {object}
-                </Button>
+                {loggedIn ? (
+                    <Button
+                        textTransform="capitalize"
+                        onClick={createModalOpen}>
+                        + New {object}
+                    </Button>
+                ) : (
+                    <></>
+                )}
             </Flex>
             <BrowseObject objSlug={slug} />
             <Modal isOpen={createModalIsOpen} onClose={createModalClose}>

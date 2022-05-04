@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import Error from '@pages/_error'
 
-import { objectSlug } from '@lib/data-objects'
+import { ObjectSlug } from '@lib/data-objects'
 
 function ListObjects() {
     const router = useRouter()
@@ -12,11 +12,11 @@ function ListObjects() {
     const objSlug = router.query.object
 
     switch (objSlug) {
-        case objectSlug.bag:
+        case ObjectSlug.bag:
             return <Box>List {username}'s Bags</Box>
-        case objectSlug.item:
+        case ObjectSlug.item:
             return <Box>List {username}'s Items</Box>
-        case objectSlug.kit:
+        case ObjectSlug.kit:
             return <Box>List {username}'s Kits</Box>
         default:
             return <Error statusCode={404} />
