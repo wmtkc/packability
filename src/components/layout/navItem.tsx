@@ -6,6 +6,7 @@ import {
     Menu,
     MenuButton,
     Text,
+    useColorModeValue,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import React, { ReactElement } from 'react'
@@ -24,18 +25,17 @@ function NavItem({
     isSmall: boolean
     active: boolean
 }) {
+    const navBackground = useColorModeValue('gray.300', 'gray.700')
     return (
         <Flex m={2} mt={5} flexDir="column" alignItems="center">
             <Link
                 href={page}
-                borderLeftStyle={active ? 'solid' : 'hidden'}
-                borderLeftColor="Teal"
+                borderLeftColor={active ? 'Teal' : navBackground}
                 borderLeftWidth={3}
                 p={2}
                 ml={0.5}
-                borderRadius={8}
                 variant="left-accent"
-                _hover={{ textDecor: 'none', borderLeftStyle: 'solid' }}
+                _hover={{ textDecor: 'none', borderLeftColor: 'Teal' }}
                 _focus={{ outline: 'none' }}>
                 <Flex h={5} alignContent="center">
                     <Icon as={icon} fontSize="xl" />

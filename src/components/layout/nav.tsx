@@ -61,11 +61,8 @@ function Nav() {
         <Flex
             pos="relative"
             direction="column"
-            h="95vh"
-            mt="2.5vh"
-            ml={2}
+            h="100vh"
             boxShadow="xl"
-            rounded={6}
             background={navBackground}
             justifyContent="space-between">
             <Flex as="nav" direction="column" alignItems="flex-start">
@@ -85,7 +82,7 @@ function Nav() {
                         icon={icon}
                         page={page}
                         isSmall={navSmall}
-                        active={router.pathname === page}
+                        active={window.location.pathname === page}
                     />
                 ))}
             </Flex>
