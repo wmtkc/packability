@@ -28,7 +28,7 @@ export type Bag = {
   id: Scalars['ID'];
   kits: Array<BagKit>;
   name: Scalars['String'];
-  owner: User;
+  owner?: Maybe<User>;
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
@@ -301,7 +301,7 @@ export type BagsQueryVariables = Exact<{
 }>;
 
 
-export type BagsQuery = { __typename?: 'Query', bags?: Array<{ __typename?: 'Bag', id: string, name: string, owner: { __typename?: 'User', id: string, username: string, name?: string | null } }> | null, _bagsMeta?: { __typename?: '_bagsMeta', count: number } | null };
+export type BagsQuery = { __typename?: 'Query', bags?: Array<{ __typename?: 'Bag', id: string, name: string, owner?: { __typename?: 'User', id: string, username: string, name?: string | null } | null }> | null, _bagsMeta?: { __typename?: '_bagsMeta', count: number } | null };
 
 export type GetBagKitsQueryVariables = Exact<{
   bag: Scalars['ID'];

@@ -53,10 +53,13 @@ const linkRefresh = new TokenRefreshLink({
 
 const linkError = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) =>
+        graphQLErrors.forEach((err) => {
+            const { message, locations, path } = err
             console.error(
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-            ),
+            )
+            console.debug(err)
+    }
         )
     if (networkError) console.error(`[Network error]: ${networkError}`)
 })
